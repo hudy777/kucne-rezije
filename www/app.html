@@ -9,7 +9,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: phone-app shell — green gradient header with a glassy total card, white rounded cards below, fixed bottom bar with a central add button */
+/* --g-soft: light tint used on the dark header and dock */
 :root{
+  --g-soft:#c6f5cf;
   --bg:#f3f6f2; --card:#ffffff; --card2:#f2f7f1; --ink:#14231a; --muted:#6c7b71; --line:#e3ebe2;
   --g1:#0b3d22; --g2:#14612f; --g3:#1f8a3f; --g4:#3fb35a; --gl:#dff2e1;
   --on-g:#ffffff; --on-g-muted:#bfe3c6;
@@ -61,14 +63,14 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 .balance .lbl{font-size:.85rem;color:var(--on-g-muted);font-weight:600}
 .balance .big{font-size:clamp(2.1rem,10vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-top:4px}
 .trend{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:.82rem;font-weight:600;color:var(--on-g-muted)}
-.trend b{color:#a8f0b6;font-weight:700} .trend b.up{color:#ffc2b8}
+.trend b{color:var(--g-soft);font-weight:700} .trend b.up{color:#ffc2b8}
 .art{position:absolute;right:-6px;bottom:-10px;width:128px;height:128px;opacity:.95;pointer-events:none}
 @media (max-width:380px){.art{width:96px;height:96px;opacity:.5}}
 
 .top-actions{position:relative;display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .top-actions:not(:has(> :not([hidden]))){display:none}
 .ro-banner{display:inline-flex;align-items:center;gap:7px;font-size:.8rem;font-weight:700;color:var(--on-g);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);padding:7px 12px;border-radius:999px}
-.export{display:inline-flex;align-items:center;gap:7px;font:700 .82rem var(--font);color:var(--g1);background:#c6f5cf;border:0;padding:8px 14px;border-radius:999px;cursor:pointer}
+.export{display:inline-flex;align-items:center;gap:7px;font:700 .82rem var(--font);color:var(--g1);background:var(--g-soft);border:0;padding:8px 14px;border-radius:999px;cursor:pointer}
 .export:hover{background:#dcfae1}
 .ghost{font:700 .8rem var(--font);color:var(--on-g);background:transparent;border:1px solid rgba(255,255,255,.25);padding:7px 14px;border-radius:999px;cursor:pointer}
 .top{padding-top:max(22px,env(safe-area-inset-top,0px))}
@@ -183,11 +185,22 @@ body.ro .person input{pointer-events:none}
 .dock nav{max-width:560px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 84px 1fr 1fr;align-items:center;height:70px}
 .dock .nav{display:flex;flex-direction:column;align-items:center;gap:3px;font:600 .68rem var(--font);color:var(--on-g-muted);background:none;border:0;padding:6px 0;cursor:pointer}
 .dock .nav .ic{width:22px;height:22px;color:inherit}
-.dock .nav.on{color:#c6f5cf}
+.dock .nav.on{color:var(--g-soft)}
 .nic{position:relative;display:block;height:22px}
 .lockb{position:absolute;right:-7px;top:-4px;width:15px;height:15px;border-radius:50%;background:var(--g1);border:1.5px solid var(--on-g-muted);display:none;place-items:center;color:var(--on-g)}
 body.ro .lockb{display:grid}
 .hint{font-size:.8rem;color:var(--muted);margin:10px 4px 0}
+.themes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.theme{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 6px;border-radius:16px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:700 .78rem var(--font);cursor:pointer}
+.theme i{width:44px;height:44px;border-radius:50%;display:block;box-shadow:inset 0 0 0 3px rgba(255,255,255,.25)}
+.theme[aria-pressed="true"]{border-color:var(--ink)}
+.pc-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.pc-row:first-child{border-top:0}
+.pc-row .avatar{width:32px;height:32px;border-radius:50%;font-size:.85rem;flex:none}
+.pc-row .pn{font-weight:700;min-width:64px;font-size:.88rem}
+.sw{display:flex;gap:6px;flex-wrap:wrap}
+.sw button{width:26px;height:26px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}
+.sw button[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 2px var(--card) inset}
 .errbox{margin-top:16px;padding:10px 12px;border-radius:12px;background:var(--redbg);color:var(--red);font-size:.8rem;font-weight:700;overflow-wrap:anywhere}
 .pending-card{display:flex;gap:12px;align-items:center;background:var(--duebg)}
 .pending-card .pc-ic{flex:none;width:40px;height:40px;border-radius:12px;background:var(--card);color:var(--due);display:grid;place-items:center}
@@ -261,7 +274,7 @@ body.ro #namesHint{display:none}
 .month-row .mt{text-align:right;font-weight:800;white-space:nowrap}
 .month-row .mt small{display:block;font-weight:600;font-size:.72rem}
 .fab{justify-self:center;width:62px;height:62px;border-radius:50%;border:5px solid var(--bg);background:linear-gradient(160deg,var(--g4),var(--g3));color:#fff;
-  display:grid;place-items:center;cursor:pointer;transform:translateY(-22px);box-shadow:0 10px 20px -6px rgba(20,97,47,.6)}
+  display:grid;place-items:center;cursor:pointer;transform:translateY(-22px);box-shadow:0 10px 20px -6px color-mix(in srgb,var(--g2) 70%,transparent)}
 .fab:active{transform:translateY(-22px) scale(.95)}
 
 /* sheet */
@@ -316,19 +329,20 @@ body.ro #namesHint{display:none}
       <div class="big num" id="total">0,00 €</div>
       <div class="trend" id="trend" hidden></div>
       <svg class="art" viewBox="0 0 128 128" aria-hidden="true">
-        <defs><linearGradient id="ga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fd889"/><stop offset="1" stop-color="#1f8a3f"/></linearGradient>
+        <defs><linearGradient id="ga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:color-mix(in srgb,var(--g4) 70%,#fff)"/><stop offset="1" style="stop-color:var(--g3)"/></linearGradient>
         <linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eafbe9"/><stop offset="1" stop-color="#bfe8c6"/></linearGradient></defs>
         <rect x="38" y="14" width="56" height="74" rx="6" fill="url(#gb)" transform="rotate(10 66 51)"/>
-        <g transform="rotate(10 66 51)" stroke="#1f8a3f" stroke-width="3" stroke-linecap="round" opacity=".7"><path d="M48 32h30M48 44h30M48 56h20"/></g>
+        <g transform="rotate(10 66 51)" style="stroke:var(--g3)" stroke-width="3" stroke-linecap="round" opacity=".7"><path d="M48 32h30M48 44h30M48 56h20"/></g>
         <path d="M18 60l40-30 40 30v48a6 6 0 0 1-6 6H24a6 6 0 0 1-6-6z" fill="url(#ga)"/>
-        <path d="M12 64l46-35 46 35" fill="none" stroke="#a8f0b6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="48" y="80" width="20" height="34" rx="3" fill="#0d4322" opacity=".55"/>
+        <path d="M12 64l46-35 46 35" fill="none" style="stroke:var(--g-soft)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="48" y="80" width="20" height="34" rx="3" style="fill:var(--g1)" opacity=".55"/>
         <circle cx="96" cy="94" r="18" fill="#f2c94c"/><text x="96" y="101" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="20" fill="#7a5a00">€</text>
       </svg>
     </div>
     <div class="top-actions">
       <button class="ghost" id="loginBtn" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" style="vertical-align:-2px"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Prijava</button>
       <button class="ghost" id="logoutBtn" hidden>Odjava</button>
+      <button class="ghost" id="colorBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" style="vertical-align:-2px"><circle cx="13.5" cy="6.5" r="1.5"/><circle cx="17.5" cy="10.5" r="1.5"/><circle cx="8.5" cy="7.5" r="1.5"/><circle cx="6.5" cy="12.5" r="1.5"/><path d="M12 2a10 10 0 0 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.4A5.6 5.6 0 0 0 22 9.8C22 5.5 17.5 2 12 2z"/></svg> Boja</button>
       <button class="ghost" id="phoneBtn" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg> <span id="phoneTxt">Obavijesti</span></button>
       <div class="ro-banner" id="roBanner" hidden><span id="roText"></span></div>
     </div>
@@ -508,6 +522,19 @@ body.ro #namesHint{display:none}
     <div class="status" id="iStatus"></div>
   </div>
 </div>
+<div class="sheet" id="cSheet" role="dialog" aria-modal="true" aria-labelledby="cSheetH">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 id="cSheetH">Boja aplikacije</h3>
+    <p class="preview" style="margin-top:-6px">Vrijedi samo na ovom mobitelu.</p>
+    <div class="themes" id="themePick"></div>
+    <div id="pColorsWrap">
+      <h3 style="margin:20px 0 6px">Boje ukućana</h3>
+      <p class="preview" style="margin-top:0">Za avatare, trake i grafove. Vide se kod svih.</p>
+      <div id="pColors"></div>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script src="config.js"></script>
@@ -545,7 +572,10 @@ const catFor=n=>{const s=(n||"").toLowerCase();return CATS.find(c=>c.m.some(m=>s
 const icon=(k,s=22)=>`<svg class="ic" viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg>`;
 
 const DEFAULT_NAMES=["Ja","Osoba 2","Osoba 3","Osoba 4"];
-const PCOL=["var(--p1)","var(--p2)","var(--p3)","var(--p4)"];
+const PCOL_DEFAULT=["var(--p1)","var(--p2)","var(--p3)","var(--p4)"];
+let PCOL=[...PCOL_DEFAULT], pcolors=null;
+const SWATCHES=["#1f8a3f","#e0852b","#4c6fd1","#c04a8e","#d64545","#0e9aa7","#8a5cd6","#c9a227","#5b6b73","#2f9e77"];
+function applyPersonColors(){PCOL=PCOL_DEFAULT.map((d,i)=>pcolors&&pcolors[i]?pcolors[i]:d)}
 const fmt=n=>new Intl.NumberFormat("hr-HR",{style:"currency",currency:"EUR"}).format(n);
 const fmt0=n=>new Intl.NumberFormat("hr-HR",{maximumFractionDigits:0}).format(n)+" €";
 const ym=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
@@ -584,13 +614,13 @@ function parseAmt(s){s=String(s).trim().replace(/\s/g,"").replace("€","");if(s
 
 // storage
 const LS="rezije-local-v1";
-function lsLoad(){try{const o=JSON.parse(localStorage.getItem(LS)||"{}");bills=o.bills||[];names=o.names||names;groups=o.groups||[];recurring=o.recurring||null}catch(e){}}
-function lsSave(){try{localStorage.setItem(LS,JSON.stringify({bills,names,groups,recurring}))}catch(e){}}
+function lsLoad(){try{const o=JSON.parse(localStorage.getItem(LS)||"{}");bills=o.bills||[];names=o.names||names;groups=o.groups||[];recurring=o.recurring||null;pcolors=o.pcolors||null;applyPersonColors()}catch(e){}}
+function lsSave(){try{localStorage.setItem(LS,JSON.stringify({bills,names,groups,recurring,pcolors}))}catch(e){}}
 async function addBill(b){if(db)await db.collection("bills").add(b);else{b.id="b"+Date.now();bills.push(b);lsSave();render()}}
 async function patchBill(id,p){if(db)await db.doc("bills/"+id).update(p);else{Object.assign(bills.find(b=>b.id===id),p);lsSave();render()}}
 async function removeBill(id){if(db)await db.doc("bills/"+id).delete();else{bills=bills.filter(b=>b.id!==id);lsSave();render()}}
 let nameTimer;
-async function savePeopleNow(){if(db){try{await db.doc("settings/people").set({names,groups})}catch(e){toast("Promjena nije spremljena")}}else lsSave()}
+async function savePeopleNow(){const doc={names,groups};if(pcolors)doc.colors=pcolors;if(db){try{await db.doc("settings/people").set(doc)}catch(e){toast("Promjena nije spremljena")}}else lsSave()}
 function saveNames(){clearTimeout(nameTimer);nameTimer=setTimeout(savePeopleNow,600)}
 let toastT;function toast(t){const el=$("toast");el.textContent=t;el.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("show"),2600)}
 
@@ -599,7 +629,7 @@ const currentList=()=>listFor(ym(cur));
 
 let builtKey=null, unlinkArmed=null;
 function buildPeople(){
-  const key=JSON.stringify(groups.map(g=>g.members));
+  const key=JSON.stringify([groups.map(g=>g.members),PCOL]);
   if(key===builtKey)return; builtKey=key;
   const U=units();
   $("people").innerHTML=U.map((u,ui)=>{
@@ -776,7 +806,7 @@ function renderWho(){
   });
 }
 function openSheet(){selWho=[...ALL];renderWho();updatePreview();$("sheet").classList.add("open");$("scrim").classList.add("open");$("status").textContent="";setTimeout(()=>$("billName").focus(),250)}
-function closeSheet(){$("sheet").classList.remove("open");$("gSheet").classList.remove("open");$("lSheet").classList.remove("open");$("rSheet").classList.remove("open");$("pSheet").classList.remove("open");$("iSheet").classList.remove("open");$("scrim").classList.remove("open")}
+function closeSheet(){$("sheet").classList.remove("open");$("gSheet").classList.remove("open");$("lSheet").classList.remove("open");$("rSheet").classList.remove("open");$("pSheet").classList.remove("open");$("iSheet").classList.remove("open");$("cSheet").classList.remove("open");$("scrim").classList.remove("open")}
 function gUpdate(){
   const sel=[...document.querySelectorAll("#pick input:checked")].map(x=>+x.value);
   $("gPreview").textContent=sel.length>=2?`Grupa vraća ${sel.length} od 4 dijela svakog računa.`:"Odaberi barem dvije osobe.";
@@ -1075,7 +1105,7 @@ function setXferUI(){
 }
 $("xferBtn").onclick=async()=>{
   if(IS_APP){$("iIn").value="";$("iPreview").textContent="";$("iStatus").textContent="";$("iSheet").classList.add("open");$("scrim").classList.add("open");return}
-  const data=JSON.stringify({app:"kucne-rezije",v:1,names,groups,recurring:recList(),bills:bills.map(b=>{const {id,...rest}=b;return {id,...rest}})});
+  const data=JSON.stringify({app:"kucne-rezije",v:1,names,groups,colors:pcolors,recurring:recList(),bills:bills.map(b=>{const {id,...rest}=b;return {id,...rest}})});
   try{await navigator.clipboard.writeText(data);toast(`Kopirano: ${bills.length} računa`)}
   catch(e){const t=$("xferOut");t.hidden=false;t.value=data;t.focus();t.select();toast("Označeno je, kopiraj ručno")}
 };
@@ -1087,7 +1117,7 @@ $("iGo").onclick=async()=>{
   const d=parseImport();if(!d){$("iStatus").textContent="Podaci nisu ispravni. Kopiraj ih ponovno.";return}
   $("iGo").disabled=true;$("iStatus").textContent="";
   try{
-    await db.doc("settings/people").set({names:d.names,groups:d.groups||[]});
+    await db.doc("settings/people").set(Object.assign({names:d.names,groups:d.groups||[]},d.colors?{colors:d.colors}:{}));
     if(Array.isArray(d.recurring))await db.doc("settings/recurring").set({items:d.recurring});
     let n=0;
     for(const b of d.bills){const {id,...rest}=b;if(!id)continue;await db.doc("bills/"+id).set(rest);n++;$("iPreview").textContent=`Uvozim… ${n}/${d.bills.length}`}
@@ -1096,12 +1126,51 @@ $("iGo").onclick=async()=>{
   finally{$("iGo").disabled=false}
 };
 
+// ---- colours: app theme (this phone only) and housemate colours (shared)
+const THEMES={
+  zelena:{n:"Zelena",g1:"#0b3d22",g2:"#14612f",g3:"#1f8a3f",g4:"#3fb35a",gl:"#dff2e1",soft:"#c6f5cf",d1:"#062615",d2:"#0d4322",d3:"#1a7034",d4:"#4cc469",dgl:"#173a20"},
+  plava:{n:"Plava",g1:"#0c2a4d",g2:"#164a80",g3:"#1f6fbf",g4:"#4a97e8",gl:"#dfeafb",soft:"#c9e0fb",d1:"#071a31",d2:"#0f3459",d3:"#1a5a9e",d4:"#5aa5f0",dgl:"#15283f"},
+  ljubicasta:{n:"Ljubičasta",g1:"#2c1450",g2:"#4a2382",g3:"#6d3bc0",g4:"#9b6be6",gl:"#ece2fb",soft:"#e0d0fb",d1:"#1b0c33",d2:"#33185c",d3:"#5a31a0",d4:"#a67ff0",dgl:"#2a1a42"},
+  narancasta:{n:"Narančasta",g1:"#4a2108",g2:"#7a3810",g3:"#c25e14",g4:"#ef8a3a",gl:"#fbe9da",soft:"#fde0c4",d1:"#2e1405",d2:"#56270b",d3:"#a34f12",d4:"#f59a52",dgl:"#3b2414"},
+  crvena:{n:"Crvena",g1:"#4a0f16",g2:"#7c1a25",g3:"#c0303f",g4:"#e8606c",gl:"#fbe0e2",soft:"#fbd0d4",d1:"#2e080d",d2:"#56121b",d3:"#a32735",d4:"#f0737e",dgl:"#3d1a1e"},
+  grafit:{n:"Grafit",g1:"#1b2328",g2:"#2c3a42",g3:"#46606d",g4:"#6f8d9b",gl:"#e3eaed",soft:"#d3e0e6",d1:"#0f1416",d2:"#1e282d",d3:"#3a515c",d4:"#86a5b3",dgl:"#1f2a2f"}
+};
+const THEME_KEY="rezije-theme";
+let themeName="zelena";try{themeName=localStorage.getItem(THEME_KEY)||"zelena"}catch(e){}
+function applyTheme(){
+  const t=THEMES[themeName]||THEMES.zelena;
+  let el=document.getElementById("themeVars");
+  if(!el){el=document.createElement("style");el.id="themeVars";document.head.appendChild(el)}
+  const light=`--g1:${t.g1};--g2:${t.g2};--g3:${t.g3};--g4:${t.g4};--gl:${t.gl};--g-soft:${t.soft};--on-g-muted:color-mix(in srgb,${t.soft} 75%,${t.g1});--p1:${t.g3}`;
+  const dark=`--g1:${t.d1};--g2:${t.d2};--g3:${t.d3};--g4:${t.d4};--gl:${t.dgl};--g-soft:${t.soft};--on-g-muted:color-mix(in srgb,${t.soft} 70%,${t.d1});--p1:${t.d4}`;
+  el.textContent=`:root{${light}}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){${dark}}}:root[data-theme="dark"]{${dark}}`;
+  const m=document.querySelector('meta[name="theme-color"]');if(m)m.content=t.g1;
+}
+function openColorSheet(){
+  $("themePick").innerHTML=Object.entries(THEMES).map(([k,t])=>`<button type="button" class="theme" data-th="${k}" aria-pressed="${k===themeName}"><i style="background:linear-gradient(160deg,${t.g4},${t.g2})"></i>${t.n}</button>`).join("");
+  $("themePick").querySelectorAll("[data-th]").forEach(b=>b.onclick=()=>{themeName=b.dataset.th;try{localStorage.setItem(THEME_KEY,themeName)}catch(e){}applyTheme();openColorSheet()});
+  $("pColorsWrap").hidden=RO;
+  if(!RO){
+    $("pColors").innerHTML=[0,1,2,3].map(i=>{const cur=(pcolors&&pcolors[i])||null;
+      return `<div class="pc-row"><div class="avatar" style="background:${PCOL[i]}">${esc(initial(names[i]))}</div><span class="pn">${esc(names[i])}</span>
+      <div class="sw"><button type="button" data-pc="${i}:" aria-pressed="${!cur}" title="Zadano" style="background:${PCOL_DEFAULT[i]}"></button>${SWATCHES.map(c=>`<button type="button" data-pc="${i}:${c}" aria-pressed="${cur===c}" style="background:${c}" aria-label="${c}"></button>`).join("")}</div></div>`}).join("");
+    $("pColors").querySelectorAll("[data-pc]").forEach(b=>b.onclick=async()=>{
+      const [i,c]=b.dataset.pc.split(":");const next=pcolors?[...pcolors]:[null,null,null,null];next[+i]=c||null;
+      pcolors=next.some(Boolean)?next:null;applyPersonColors();builtKey=null;render();openColorSheet();await savePeopleNow();
+    });
+  }
+  $("cSheet").classList.add("open");$("scrim").classList.add("open");
+}
+$("colorBtn").onclick=openColorSheet;
+applyTheme();
+
 // One page, two homes: the Android app (Firebase + owner sign-in) or a Claude artifact
 const IS_APP=!!(window.RezijeBackend&&window.FIREBASE_CONFIG);
 let authApi=null, signedIn=null;
 function subscribe(){
   db.doc("settings/people").onSnapshot(s=>{if(s.exists){const d=s.data();if(Array.isArray(d.names))names=[...d.names];
-    groups=Array.isArray(d.groups)?d.groups.map(g=>({name:g.name||"",members:[...(g.members||[])].filter(m=>m>=1&&m<=3)})).filter(g=>g.members.length>=2):[];render()}},()=>{});
+    groups=Array.isArray(d.groups)?d.groups.map(g=>({name:g.name||"",members:[...(g.members||[])].filter(m=>m>=1&&m<=3)})).filter(g=>g.members.length>=2):[];
+    pcolors=Array.isArray(d.colors)&&d.colors.length===4?d.colors.map(c=>typeof c==="string"&&/^#[0-9a-fA-F]{6}$/.test(c)?c:null):null;applyPersonColors();builtKey=null;render()}},()=>{});
   db.doc("settings/recurring").onSnapshot(s=>{recurring=s.exists&&Array.isArray(s.data().items)?s.data().items:null;render()},()=>{});
   db.collection("bills").onSnapshot(s=>{bills=cleanBills(s.docs.map(d=>({id:d.id,...d.data()})));billsLoaded=true;render();if(NOTE&&phoneOf===null&&!askedPhone){askedPhone=true;setTimeout(openPhoneSheet,600)}},
     ()=>{$("bills").innerHTML=`<div class="empty">Računi se trenutno ne mogu učitati. Provjeri internet.</div>`});
