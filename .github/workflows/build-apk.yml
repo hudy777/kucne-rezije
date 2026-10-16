@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   build:
@@ -27,6 +29,11 @@ jobs:
         run: |
           npm ci
           npm run build
+
+      - name: Pripremi stranicu za automatska ažuriranja
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: www
 
       - name: Izgradi APK
         working-directory: android
@@ -58,3 +65,14 @@ jobs:
           name: Kućne režije 1.${{ github.run_number }}
           files: kucne-rezije.apk
           make_latest: true
+
+  # The installed app loads the newest page from here, so most changes need no new APK
+  pages:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -96,3 +96,10 @@ Pri prvom otvaranju aplikacija pita **čiji je to mobitel**. Ukućanin odabere s
 
 `src/page.html` je jedina izvorna datoteka (ista se koristi i kao Claude artifact).
 `npm run build` iz nje napravi `www/index.html`.
+
+## Automatska ažuriranja
+
+Aplikacija pri svakom pokretanju preuzme najnoviji izgled s `https://hudy777.github.io/kucne-rezije/app.html` i zapamti ga za rad bez interneta.
+Većina izmjena zato ne traži novi APK. Novi APK treba samo kad se mijenja Android dio (npr. nova vrsta obavijesti).
+
+Jednokratno: na GitHubu **Settings → Pages → Build and deployment → Source: GitHub Actions**.
