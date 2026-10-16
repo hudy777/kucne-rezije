@@ -30,10 +30,26 @@ jobs:
 
       - name: Izgradi APK
         working-directory: android
+        shell: bash
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          set -o pipefail
+          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee ../build.log
           cp app/build/outputs/apk/debug/app-debug.apk ../kucne-rezije.apk
+
+      - name: Spremi zapisnik greške
+        if: failure()
+        shell: bash
+        run: |
+          git config user.name "build-bot"
+          git config user.email "build-bot@users.noreply.github.com"
+          tail -n 300 build.log > /tmp/build-log.txt || echo "nema zapisnika" > /tmp/build-log.txt
+          git checkout --orphan build-log
+          git rm -rf --cached . > /dev/null
+          cp /tmp/build-log.txt build-log.txt
+          git add build-log.txt
+          git commit -m "Zapisnik neuspjele izgradnje ${{ github.run_number }}"
+          git push -f origin build-log
 
       - name: Objavi APK za preuzimanje
         uses: softprops/action-gh-release@v2
