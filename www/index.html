@@ -72,8 +72,7 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 .export:hover{background:#dcfae1}
 .ghost{font:700 .8rem var(--font);color:var(--on-g);background:transparent;border:1px solid rgba(255,255,255,.25);padding:7px 14px;border-radius:999px;cursor:pointer}
 .top{padding-top:max(22px,env(safe-area-inset-top,0px))}
-body.ro .fab,body.ro #addLink,body.ro #groupLink,body.ro .del,body.ro .unlink{display:none!important}
-body.ro .fab{display:block!important;visibility:hidden}
+body.ro #addLink,body.ro #groupLink,body.ro .del,body.ro .unlink{display:none!important}
 body.ro .toggle{cursor:default}
 body.ro .person input{pointer-events:none}
 /* section */
@@ -181,9 +180,22 @@ body.ro .person input{pointer-events:none}
   padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));
   background:linear-gradient(180deg,var(--g2),var(--g1));border-radius:24px 24px 0 0;box-shadow:0 -8px 30px -12px rgba(0,0,0,.35)}
 .dock nav{max-width:560px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 84px 1fr 1fr;align-items:center;height:70px}
-.dock a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.68rem;font-weight:600;color:var(--on-g-muted);text-decoration:none;padding:6px 0}
-.dock a .ic{width:22px;height:22px;color:inherit}
-.dock a.on{color:#c6f5cf}
+.dock .nav{display:flex;flex-direction:column;align-items:center;gap:3px;font:600 .68rem var(--font);color:var(--on-g-muted);background:none;border:0;padding:6px 0;cursor:pointer}
+.dock .nav .ic{width:22px;height:22px;color:inherit}
+.dock .nav.on{color:#c6f5cf}
+.nic{position:relative;display:block;height:22px}
+.lockb{position:absolute;right:-7px;top:-4px;width:15px;height:15px;border-radius:50%;background:var(--g1);border:1.5px solid var(--on-g-muted);display:none;place-items:center;color:var(--on-g)}
+body.ro .lockb{display:grid}
+.hint{font-size:.8rem;color:var(--muted);margin:10px 4px 0}
+.month-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-bottom:0;font-family:inherit;color:var(--ink);cursor:pointer;text-align:left}
+.month-row:first-child{border-top:0;padding-top:2px}
+.month-row .mi{flex:none;width:44px;height:44px;border-radius:14px;background:var(--gl);color:var(--g3);display:grid;place-items:center;font-weight:800;font-size:.8rem;text-transform:uppercase}
+.month-row.cur .mi{background:var(--g3);color:#fff}
+.month-row .mm{flex:1;min-width:0}
+.month-row .mn{font-weight:700;text-transform:capitalize}
+.month-row .ms{font-size:.78rem;color:var(--muted)}
+.month-row .mt{text-align:right;font-weight:800;white-space:nowrap}
+.month-row .mt small{display:block;font-weight:600;font-size:.72rem}
 .fab{justify-self:center;width:62px;height:62px;border-radius:50%;border:5px solid var(--bg);background:linear-gradient(160deg,var(--g4),var(--g3));color:#fff;
   display:grid;place-items:center;cursor:pointer;transform:translateY(-22px);box-shadow:0 10px 20px -6px rgba(20,97,47,.6)}
 .fab:active{transform:translateY(-22px) scale(.95)}
@@ -224,19 +236,19 @@ body.ro .person input{pointer-events:none}
 <body>
 
 <div class="app">
-  <header class="top pad" id="pregled">
+  <header class="top pad">
     <div class="top-row">
-      <div class="hello"><h1 id="greet">Bok 👋</h1><p>Pregled kućnih režija</p></div>
+      <div class="hello"><h1 id="greet">Bok 👋</h1><p id="pageSub">Pregled kućnih režija</p></div>
       <div class="month">
         <button id="prev" aria-label="Prethodni mjesec">‹</button>
         <span id="monthLabel">—</span>
         <button id="next" aria-label="Sljedeći mjesec">›</button>
       </div>
     </div>
-    <div class="balance">
+    <div class="balance" id="balance">
       <div class="lbl">Ukupno režija ovaj mjesec</div>
       <div class="big num" id="total">0,00 €</div>
-      <div class="trend" id="trend">Po osobi <b id="shareTop">0,00 €</b></div>
+      <div class="trend" id="trend" hidden></div>
       <svg class="art" viewBox="0 0 128 128" aria-hidden="true">
         <defs><linearGradient id="ga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fd889"/><stop offset="1" stop-color="#1f8a3f"/></linearGradient>
         <linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eafbe9"/><stop offset="1" stop-color="#bfe8c6"/></linearGradient></defs>
@@ -249,17 +261,17 @@ body.ro .person input{pointer-events:none}
       </svg>
     </div>
     <div class="top-actions">
-      <div class="ro-banner" id="roBanner" hidden><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span id="roText">Samo za pregled</span></div>
-      <button class="export" id="loginBtn" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/></svg>Prijava za uređivanje</button>
+      <button class="ghost" id="loginBtn" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" style="vertical-align:-2px"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Prijava</button>
       <button class="ghost" id="logoutBtn" hidden>Odjava</button>
-      <button class="export" id="exportBtn" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Izvezi za ukućane</button>
+      <div class="ro-banner" id="roBanner" hidden><span id="roText"></span></div>
     </div>
   </header>
 
   <main class="pad">
-    <section class="section">
-      <div class="sec-head"><h2>Tvoj trošak i povrat</h2><span class="meta" id="mLbl2">Ovaj mjesec</span></div>
-      <div class="card split">
+    <div class="page" data-page="pregled">
+      <section class="section">
+        <div class="sec-head"><h2>Povrat od ukućana</h2><span class="meta" id="mLbl2">Ovaj mjesec</span></div>
+        <div class="card split">
         <div class="stat l">
           <div class="k">Vraćeno</div>
           <div class="v num" id="backAmt">0,00 €</div>
@@ -280,31 +292,44 @@ body.ro .person input{pointer-events:none}
         </div>
       </div>
     </section>
+      <section class="section">
+        <div class="sec-head"><h2>Po kategoriji</h2><span class="meta" id="mLbl3">Ovaj mjesec</span></div>
+        <div class="card" id="chartCard"></div>
+      </section>
+    </div>
 
-    <section class="section">
-      <div class="sec-head"><h2>Po kategoriji</h2><span class="meta" id="mLbl3">Ovaj mjesec</span></div>
-      <div class="card" id="chartCard"></div>
-    </section>
+    <div class="page" data-page="ukucani" hidden>
+      <section class="section">
+        <div class="sec-head"><h2>Tko koliko duguje</h2><button class="linkbtn" id="groupLink">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-2px"><circle cx="8" cy="12" r="4"/><circle cx="16" cy="12" r="4"/></svg> Spoji u grupu</button></div>
+        <div class="people" id="people"></div>
+        <p class="hint">Klikni na ime za promjenu.</p>
+      </section>
+    </div>
 
-    <section class="section" id="ukucani">
-      <div class="sec-head"><h2>Ukućani</h2><button class="linkbtn" id="groupLink">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-2px"><circle cx="8" cy="12" r="4"/><circle cx="16" cy="12" r="4"/></svg> Spoji u grupu</button></div>
-      <div class="people" id="people"></div>
-    </section>
+    <div class="page" data-page="racuni" hidden>
+      <section class="section">
+        <div class="sec-head"><h2>Računi u mjesecu</h2><button class="linkbtn" id="addLink">+ Dodaj</button></div>
+        <div class="card"><div id="bills"><div class="empty">Učitavanje…</div></div></div>
+        <p class="hint">Klikni na osobu kad ti vrati svoj dio.</p>
+      </section>
+    </div>
 
-    <section class="section" id="racuni">
-      <div class="sec-head"><h2>Računi</h2><button class="linkbtn" id="addLink">+ Dodaj</button></div>
-      <div class="card"><div id="bills"><div class="empty">Učitavanje…</div></div></div>
-    </section>
+    <div class="page" data-page="mjeseci" hidden>
+      <section class="section">
+        <div class="sec-head"><h2>Svi mjeseci</h2><span class="meta">Odaberi mjesec</span></div>
+        <div class="card"><div id="months"></div></div>
+      </section>
+    </div>
   </main>
 </div>
 
 <div class="dock"><nav aria-label="Navigacija">
-  <a href="#pregled" class="on"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Pregled</a>
-  <a href="#ukucani"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2a5 5 0 0 1 5.5 5.8"/></svg>Ukućani</a>
+  <button class="nav on" data-go="pregled"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Pregled</button>
+  <button class="nav" data-go="ukucani"><span class="nic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2a5 5 0 0 1 5.5 5.8"/></svg><span class="lockb" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span>Ukućani</button>
   <button class="fab" id="fab" aria-label="Dodaj račun"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
-  <a href="#racuni"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>Računi</a>
-  <a href="#" id="navMonth"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Danas</a>
+  <button class="nav" data-go="racuni"><span class="nic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg><span class="lockb" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span>Računi</button>
+  <button class="nav" data-go="mjeseci"><span class="nic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span class="lockb" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span>Mjeseci</button>
 </nav></div>
 
 <div class="scrim" id="scrim"></div>
@@ -338,12 +363,12 @@ body.ro .person input{pointer-events:none}
 <div class="sheet" id="lSheet" role="dialog" aria-modal="true" aria-labelledby="lSheetH">
   <div class="sheet-in">
     <div class="grab"></div>
-    <h3 id="lSheetH">Prijava za uređivanje</h3>
-    <p class="preview" style="margin-top:-6px">Samo vlasnik može dodavati račune i označavati povrate. Ostali ukućani sve vide bez prijave.</p>
+    <h3 id="lSheetH">Otključaj</h3>
+    <p class="preview" style="margin-top:-6px">Ukućani, Računi, Mjeseci i dodavanje računa zaključani su. Pregled je otvoren svima.</p>
     <form id="lForm" autocomplete="on">
       <div class="field"><label for="lEmail">Email</label><input id="lEmail" type="email" autocomplete="username" inputmode="email"></div>
       <div class="field"><label for="lPass">Lozinka</label><input id="lPass" type="password" autocomplete="current-password"></div>
-      <button class="primary" type="submit" id="lSubmit">Prijavi se</button>
+      <button class="primary" type="submit" id="lSubmit">Otključaj</button>
       <div class="status" id="lStatus"></div>
     </form>
   </div>
@@ -406,7 +431,7 @@ const groupName=g=>(g.name&&g.name.trim())||g.members.map(m=>names[m]).join(" i 
 const unitName=u=>u.type==="group"?groupName(groups[u.gi]):names[u.members[0]];
 const $=id=>document.getElementById(id);
 
-(()=>{const h=new Date().getHours();$("greet").textContent=(h<10?"Dobro jutro":h<18?"Dobar dan":"Dobra večer")+" 👋"})();
+
 
 // Split in cents among the people the bill applies to; leftover cents go to the payer when included, else to the first participant
 const ALL=[0,1,2,3];
@@ -490,8 +515,8 @@ function render(){
   const pd=new Date(cur);pd.setMonth(pd.getMonth()-1);
   const prev=listFor(ym(pd)).reduce((s,b)=>s+b.amount,0);
   if(prev>0&&total>0){const ch=Math.round((total-prev)/prev*100);
-    $("trend").innerHTML=`<b class="${ch>0?"up":""}">${ch>0?"+":""}${ch}%</b> u odnosu na ${MONTHS[pd.getMonth()]} · tvoj dio <b>${fmt(mine)}</b>`}
-  else $("trend").innerHTML=`Tvoj dio <b>${fmt(mine)}</b>`;
+    $("trend").innerHTML=`<b class="${ch>0?"up":""}">${ch>0?"+":""}${ch}%</b> u odnosu na ${MONTHS[pd.getMonth()]}`;$("trend").hidden=false}
+  else $("trend").hidden=true;
 
   // split card
   const pct=dueAll>0?Math.round(back/dueAll*100):0;
@@ -501,6 +526,7 @@ function render(){
   $("lineBack").style.width=pct+"%";$("lineOwed").style.width=(dueAll?100-pct:0)+"%";
 
   renderChart(list);
+  renderMonths();
 
   buildPeople();
   document.querySelectorAll("[data-av]").forEach(a=>a.textContent=initial(names[+a.dataset.av]));
@@ -604,7 +630,7 @@ $("gSave").onclick=async()=>{
   groups.push({name:$("gName").value.trim(),members:sel});
   await savePeopleNow();closeSheet();render();toast("Grupa spojena: "+groupName(groups[groups.length-1]));
 };
-$("fab").onclick=openSheet;$("addLink").onclick=openSheet;$("scrim").onclick=closeSheet;
+$("addLink").onclick=openSheet;$("scrim").onclick=()=>{pendingPage=null;pendingAdd=false;closeSheet()};
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
 function updatePreview(){
   const a=parseAmt($("billAmt").value);
@@ -633,34 +659,47 @@ $("addForm").addEventListener("submit",async e=>{
 // nav
 $("prev").onclick=()=>{cur.setMonth(cur.getMonth()-1);render()};
 $("next").onclick=()=>{cur.setMonth(cur.getMonth()+1);render()};
-$("navMonth").onclick=e=>{e.preventDefault();cur=new Date();cur.setDate(1);render();window.scrollTo({top:0})};
-document.querySelectorAll(".dock a[href^='#']:not(#navMonth)").forEach(a=>a.addEventListener("click",()=>{document.querySelectorAll(".dock a").forEach(x=>x.classList.remove("on"));a.classList.add("on")}));
-
-// export: a self-contained, read-only copy with today's data baked in
-function buildExport(){
-  const snap={bills,names,groups,month:ym(cur),exportedAt:Date.now()};
-  const json=JSON.stringify(snap).replace(/</g,"\\u003c");
-  return '<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Kućne režije</title>'
-    +'<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">'
-    +'<style>'+STYLE_SRC.replace(/<\/style/gi,"<\\/style")+'</style></head><body>'
-    +PRISTINE+'<script>window.__SNAPSHOT__='+json+'<\/script><script>'+SCRIPT_SRC+'<\/script></body></html>';
+// pages: Pregled is open to everyone, the rest need the owner's sign-in
+const PAGES={pregled:"Pregled kućnih režija",ukucani:"Ukućani",racuni:"Računi",mjeseci:"Mjeseci"};
+const LOCKED=new Set(["ukucani","racuni","mjeseci"]);
+let page="pregled", pendingPage=null, pendingAdd=false;
+function go(p){
+  if(LOCKED.has(p)&&RO){pendingPage=p;pendingAdd=false;openLogin();return}
+  page=p;
+  document.querySelectorAll(".page").forEach(el=>el.hidden=el.dataset.page!==p);
+  document.querySelectorAll(".dock .nav").forEach(b=>b.classList.toggle("on",b.dataset.go===p));
+  $("balance").hidden=p!=="pregled";
+  $("pageSub").textContent=PAGES[p];
+  if(p==="pregled")setGreeting();else $("greet").textContent=PAGES[p];
+  window.scrollTo({top:0});
 }
-let downloads=null;
-$("exportBtn").onclick=async()=>{
-  if(!downloads){toast("Izvoz trenutno nije dostupan");return}
-  const d=new Date(),fname=`rezije-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}.html`;
-  try{await downloads.save({filename:fname,data:new Blob([buildExport()],{type:"text/html"})});toast("Datoteka spremljena: "+fname)}
-  catch(e){const c=e&&e.code;
-    if(c==="declined")return;
-    if(c==="rate_limited"){toast("Pričekaj trenutak pa pokušaj ponovno");return}
-    if(c==="bad_request"||c==="transform_error"){toast("Datoteka nije spremljena");return}
-    $("exportBtn").hidden=true;toast("Izvoz nije dostupan u ovom prikazu")}
-};
+function setGreeting(){const h=new Date().getHours();$("greet").textContent=(h<10?"Dobro jutro":h<18?"Dobar dan":"Dobra večer")+" 👋"}
+document.querySelectorAll(".dock .nav").forEach(b=>b.onclick=()=>go(b.dataset.go));
+$("fab").onclick=()=>{if(RO){pendingAdd=true;pendingPage=null;openLogin();return}openSheet()};
+function afterLogin(){const p=pendingPage,a=pendingAdd;pendingPage=null;pendingAdd=false;if(p)go(p);if(a)setTimeout(openSheet,320)}
+
+function renderMonths(){
+  const el=$("months");if(!el)return;
+  const byM={};bills.forEach(b=>{(byM[b.month]=byM[b.month]||[]).push(b)});
+  const now=ym(new Date());if(!byM[now])byM[now]=[];
+  const keys=Object.keys(byM).sort().reverse();
+  el.innerHTML="";
+  keys.forEach(k=>{
+    const list=byM[k],[y,m]=k.split("-").map(Number);
+    const total=list.reduce((s,b)=>s+b.amount,0);
+    let due=0,owed=0;list.forEach(b=>{const w=whoOf(b),sh=shares(b.amount,w);w.filter(i=>i!==0).forEach(i=>{due+=sh[i];if(!(b.paid&&b.paid["p"+(i+1)]))owed+=sh[i]})});
+    const row=document.createElement("button");row.className="month-row"+(k===ym(cur)?" cur":"");
+    const state=!list.length?"":owed<0.005?`<small style="color:var(--ok)">sve vraćeno</small>`:`<small style="color:var(--due)">duguju ${fmt(owed)}</small>`;
+    row.innerHTML=`<div class="mi">${MONTHS[m-1].slice(0,3)}</div><div class="mm"><div class="mn">${MONTHS[m-1]} ${y}</div><div class="ms">${list.length} ${list.length===1?"račun":list.length>=2&&list.length<=4?"računa":"računa"}${k===now?" · ovaj mjesec":""}</div></div><div class="mt num">${fmt(total)}${state}</div>`;
+    row.onclick=()=>{cur=new Date(y,m-1,1);render();go("racuni")};
+    el.append(row);
+  });
+}
 
 // boot
 if(SNAP){bills=SNAP.bills||[];names=SNAP.names||names;groups=SNAP.groups||[];
   if(SNAP.month){const [y,m]=SNAP.month.split("-").map(Number);cur=new Date(y,m-1,1)}}
-buildPeople();render();
+buildPeople();render();go("pregled");
 // Firebase: everyone reads, only the owner (signed in) edits
 let authApi=null, signedIn=null;
 function setAuthUI(){
@@ -668,7 +707,8 @@ function setAuthUI(){
   $("loginBtn").hidden=!authApi||owner;
   $("logoutBtn").hidden=!owner;
   if(signedIn&&!owner){$("roText").textContent="Prijavljen račun nema pravo uređivanja"}
-  else if(!SNAP&&RO){$("roText").textContent="Samo za pregled"}
+  else if(!SNAP&&RO){$("roText").textContent="Ostale stranice su zaključane"}
+  if(RO&&LOCKED.has(page))go("pregled");
 }
 (async()=>{
   if(SNAP)return;
@@ -697,7 +737,7 @@ $("lForm").addEventListener("submit",async e=>{
   if(!em||!pw){$("lStatus").textContent="Upiši email i lozinku.";return}
   $("lStatus").textContent="";$("lSubmit").disabled=true;
   try{const r=await authApi.signIn(em,pw);
-    if(authApi.isOwner(r.user)){closeSheet();$("lPass").value="";toast("Prijavljen si, možeš uređivati")}
+    if(authApi.isOwner(r.user)){closeSheet();$("lPass").value="";toast("Otključano");afterLogin()}
     else{$("lStatus").textContent="Ovaj račun nema pravo uređivanja.";await authApi.signOut()}}
   catch(err){const c=err&&err.code||"";
     $("lStatus").textContent=c.includes("network")?"Nema interneta. Pokušaj ponovno.":c.includes("too-many")?"Previše pokušaja. Pričekaj par minuta.":"Pogrešan email ili lozinka."}
