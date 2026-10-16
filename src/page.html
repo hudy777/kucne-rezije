@@ -183,6 +183,7 @@ body.ro .person input{pointer-events:none}
 .lockb{position:absolute;right:-7px;top:-4px;width:15px;height:15px;border-radius:50%;background:var(--g1);border:1.5px solid var(--on-g-muted);display:none;place-items:center;color:var(--on-g)}
 body.ro .lockb{display:grid}
 .hint{font-size:.8rem;color:var(--muted);margin:10px 4px 0}
+.errbox{margin-top:16px;padding:10px 12px;border-radius:12px;background:var(--redbg);color:var(--red);font-size:.8rem;font-weight:700;overflow-wrap:anywhere}
 .pending-card{display:flex;gap:12px;align-items:center;background:var(--duebg)}
 .pending-card .pc-ic{flex:none;width:40px;height:40px;border-radius:12px;background:var(--card);color:var(--due);display:grid;place-items:center}
 .pc-t{font-weight:800;color:var(--due);font-size:.9rem}
@@ -327,6 +328,7 @@ body.ro #namesHint{display:none}
   </header>
 
   <main class="pad">
+    <div class="errbox" id="errBox" hidden></div>
     <div class="page" data-page="pregled">
       <section class="section" id="pendingHome" hidden>
         <div class="card pending-card"><div class="pc-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
@@ -658,15 +660,18 @@ function render(){
   $("backAmt").textContent=fmt(back);$("owedAmt").textContent=fmt(owedAll);
   $("lineBack").style.width=pct+"%";$("lineOwed").style.width=(dueAll?100-pct:0)+"%";
 
-  renderChart(list);
-  renderMonths();
-  renderYear();
-  renderRecurring();
-  renderPendingHome();
-  setPhoneUI();
-  planReminders();
-  setXferUI();
-
+  safe("graf",()=>renderChart(list));
+  safe("mjeseci",renderMonths);
+  safe("pregled",renderYear);
+  safe("stalne",renderRecurring);
+  safe("čeka upis",renderPendingHome);
+  safe("obavijesti",()=>{setPhoneUI();planReminders()});
+  safe("prijenos",setXferUI);
+  safe("ukućani",()=>renderPeople(list,owed,due,mine));
+  safe("računi",()=>renderBills(list));
+  showErrors();
+}
+function renderPeople(list,owed,due,mine){
   buildPeople();
   document.querySelectorAll("[data-av]").forEach(a=>a.textContent=initial(names[+a.dataset.av]));
   units().forEach((u,ui)=>{
@@ -686,7 +691,14 @@ function render(){
     else if(ow<du-0.005){c.className="chip due";c.textContent="još "+fmt(ow)}
     else{c.className="chip due";c.textContent=u.type==="group"?"grupa duguje":"duguje"}
   });
-  renderBills(list);
+}
+const renderErrors={};
+function safe(part,fn){try{fn();delete renderErrors[part]}catch(e){renderErrors[part]=(e&&e.message)||String(e);console.error(part,e)}}
+function showErrors(){
+  const el=$("errBox");if(!el)return;
+  const k=Object.keys(renderErrors);
+  el.hidden=!k.length&&!badBills;
+  el.textContent=(badBills?`Preskočeno ${badBills} neispravnih zapisa u bazi (bills: ${badIds.slice(0,3).join(", ")}${badIds.length>3?"…":""}). `:"")+k.map(x=>`Greška (${x}): ${renderErrors[x]}`).join(" · ");
 }
 
 function niceMax(v){if(v<=0)return 100;const raw=v/4,p=Math.pow(10,Math.floor(Math.log10(raw)));const step=[1,2,2.5,3,4,5,6,8,10].map(f=>f*p).find(x=>x>=raw);return step*4}
@@ -872,7 +884,7 @@ function lastAmountFor(r,month){
 function pendingFor(month){const list=listFor(month);return recList().filter(r=>!list.some(b=>b.rid===r.id))}
 function renderRecurring(){
   const el=$("recCard");if(!el)return;
-  if(document.activeElement&&el.contains(document.activeElement)&&document.activeElement.tagName==="INPUT")return;
+  const ae=document.activeElement,focusId=ae&&el.contains(ae)&&ae.tagName==="INPUT"?ae.id:null,caret=focusId?ae.selectionStart:null;
   const m=ym(cur),list=listFor(m),items=recList();
   if(!items.length){el.innerHTML=`<div class="chart-empty">Nema stalnih režija.${RO?"":" Dodaj ih preko „Uredi popis”."}</div>`;return}
   el.innerHTML=items.map(r=>{
@@ -886,6 +898,7 @@ function renderRecurring(){
       <div class="rec-in"><input data-rid="${r.id}" id="rin-${r.id}" inputmode="decimal" placeholder="${last!=null?String(last).replace(".",","):"0,00"}" value="${esc(val)}" aria-label="Iznos za ${esc(r.name)}"><button data-radd="${r.id}">Dodaj</button></div></div>`;
   }).join("")+`<div id="recFoot"></div>`;
   updateRecFoot();
+  if(focusId&&$(focusId)){const x=$(focusId);x.focus();try{x.setSelectionRange(caret,caret)}catch(e){}}
   el.querySelectorAll("[data-radd]").forEach(b=>b.onclick=()=>addRecurring([b.dataset.radd]));
   el.querySelectorAll("input[data-rid]").forEach(x=>{x.oninput=()=>{recDraft[x.dataset.rid]=x.value;updateRecFoot()};x.onkeydown=e=>{if(e.key==="Enter")addRecurring([x.dataset.rid])}});
 }
@@ -1081,10 +1094,23 @@ function subscribe(){
   db.doc("settings/people").onSnapshot(s=>{if(s.exists){const d=s.data();if(Array.isArray(d.names))names=[...d.names];
     groups=Array.isArray(d.groups)?d.groups.map(g=>({name:g.name||"",members:[...(g.members||[])].filter(m=>m>=1&&m<=3)})).filter(g=>g.members.length>=2):[];render()}},()=>{});
   db.doc("settings/recurring").onSnapshot(s=>{recurring=s.exists&&Array.isArray(s.data().items)?s.data().items:null;render()},()=>{});
-  db.collection("bills").onSnapshot(s=>{bills=s.docs.map(d=>({id:d.id,...d.data()}));billsLoaded=true;render();if(NOTE&&phoneOf===null&&!askedPhone){askedPhone=true;setTimeout(openPhoneSheet,600)}},
+  db.collection("bills").onSnapshot(s=>{bills=cleanBills(s.docs.map(d=>({id:d.id,...d.data()})));billsLoaded=true;render();if(NOTE&&phoneOf===null&&!askedPhone){askedPhone=true;setTimeout(openPhoneSheet,600)}},
     ()=>{$("bills").innerHTML=`<div class="empty">Računi se trenutno ne mogu učitati. Provjeri internet.</div>`});
 }
-let billsLoaded=false,askedPhone=false;
+let billsLoaded=false,askedPhone=false,badBills=0,badIds=[];
+// keep only records the page can show: a YYYY-MM month and a positive amount
+function cleanBills(arr){
+  let bad=0;badIds=[];
+  const out=arr.map(b=>{
+    const amount=typeof b.amount==="number"?b.amount:parseAmt(String(b.amount??""));
+    const month=typeof b.month==="string"&&/^\d{4}-\d{2}$/.test(b.month)?b.month:null;
+    if(!month||!(amount>0)){bad++;badIds.push(b.id);return null}
+    const who=Array.isArray(b.who)?b.who.map(Number).filter(i=>i>=0&&i<=3):null;
+    return {...b,amount,month,name:String(b.name||"Račun"),who:who&&who.length?[...new Set(who)].sort():[0,1,2,3],paid:b.paid&&typeof b.paid==="object"?b.paid:{}};
+  }).filter(Boolean);
+  badBills=bad;if(bad)console.warn("preskočeno zapisa:",bad);
+  return out;
+}
 function setAuthUI(){
   const owner=!!(authApi&&authApi.isOwner(signedIn));
   $("loginBtn").hidden=!authApi||owner;
