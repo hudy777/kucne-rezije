@@ -1,11 +1,11 @@
 rules_version = '2';
 // Kućne režije: svi čitaju, samo vlasnik uređuje.
-// ⬇️ ZAMIJENI email ispod istim emailom kao u www/config.js
+// Vlasnik: isti email kao u www/config.js
 service cloud.firestore {
   match /databases/{database}/documents {
     function isOwner() {
       return request.auth != null
-        && request.auth.token.email == "ZAMIJENI@gmail.com";
+        && request.auth.token.email == "hudincec.nikola@gmail.com";
     }
     match /bills/{billId} {
       allow read: if true;
