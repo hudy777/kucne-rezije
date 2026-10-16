@@ -1143,7 +1143,8 @@ function applyTheme(){
   if(!el){el=document.createElement("style");el.id="themeVars";document.head.appendChild(el)}
   const light=`--g1:${t.g1};--g2:${t.g2};--g3:${t.g3};--g4:${t.g4};--gl:${t.gl};--g-soft:${t.soft};--on-g-muted:color-mix(in srgb,${t.soft} 75%,${t.g1});--p1:${t.g3}`;
   const dark=`--g1:${t.d1};--g2:${t.d2};--g3:${t.d3};--g4:${t.d4};--gl:${t.dgl};--g-soft:${t.soft};--on-g-muted:color-mix(in srgb,${t.soft} 70%,${t.d1});--p1:${t.d4}`;
-  el.textContent=`:root{${light}}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){${dark}}}:root[data-theme="dark"]{${dark}}`;
+  // doubled :root outranks the page's own token blocks wherever this <style> lands in the document
+  el.textContent=`:root:root{${light}}@media (prefers-color-scheme:dark){:root:root:not([data-theme="light"]){${dark}}}:root:root[data-theme="dark"]{${dark}}`;
   const m=document.querySelector('meta[name="theme-color"]');if(m)m.content=t.g1;
 }
 function openColorSheet(){
