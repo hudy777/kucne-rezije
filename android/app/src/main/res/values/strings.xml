@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Kućne režije</string>
+    <string name="title_activity_main">Kućne režije</string>
+    <string name="package_name">hr.kucne.rezije</string>
+    <string name="custom_url_scheme">hr.kucne.rezije</string>
+</resources>

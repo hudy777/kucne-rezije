@@ -1,0 +1,6 @@
+{
+  "appId": "hr.kucne.rezije",
+  "appName": "Kućne režije",
+  "webDir": "www",
+  "android": { "backgroundColor": "#0b3d22" }
+}
