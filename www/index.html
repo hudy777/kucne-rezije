@@ -220,6 +220,10 @@ body.ro .rec-in,body.ro .rec-foot,body.ro #recEdit{display:none!important}
 .r-who button[aria-pressed="true"]{border-color:var(--g3);background:var(--gl);color:var(--ink)}
 .r-who button[aria-pressed="true"] .avatar{opacity:1;filter:none}
 body.ro #namesHint{display:none}
+.xfer{display:flex;flex-direction:column;gap:12px}
+.xfer p{margin:0;font-size:.88rem;color:var(--muted)}
+.xfer textarea,#iIn{width:100%;font:500 .78rem ui-monospace,monospace;padding:10px;border:1.5px solid var(--line);border-radius:12px;background:var(--card2);color:var(--ink);resize:vertical}
+#iIn{min-height:120px}
 .yswitch{display:flex;align-items:center;gap:2px;background:var(--card);border-radius:999px;padding:3px;box-shadow:var(--shadow)}
 .yswitch button{width:28px;height:28px;border-radius:50%;border:0;background:transparent;color:var(--ink);font-size:1.05rem;cursor:pointer;line-height:1}
 .yswitch button:hover{background:var(--card2)}
@@ -408,6 +412,14 @@ body.ro #namesHint{display:none}
         <div class="sec-head"><h2>Svi mjeseci</h2><span class="meta">Odaberi mjesec</span></div>
         <div class="card"><div id="months"></div></div>
       </section>
+      <section class="section" id="xferSec">
+        <div class="sec-head"><h2>Prijenos podataka</h2></div>
+        <div class="card xfer">
+          <p id="xferTxt"></p>
+          <button class="primary" type="button" id="xferBtn"></button>
+          <textarea id="xferOut" readonly hidden aria-label="Podaci za kopiranje"></textarea>
+        </div>
+      </section>
     </div>
   </main>
 </div>
@@ -481,6 +493,17 @@ body.ro #namesHint{display:none}
     <div class="who" id="phonePick"></div>
     <button class="linkbtn" id="phoneNone" style="margin-top:14px">Ne želim obavijesti</button>
     <div class="status" id="pStatus"></div>
+  </div>
+</div>
+<div class="sheet" id="iSheet" role="dialog" aria-modal="true" aria-labelledby="iSheetH">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 id="iSheetH">Uvezi podatke</h3>
+    <p class="preview" style="margin-top:-6px">Zalijepi podatke kopirane iz Claudea. Računi s istom oznakom se prepisuju, pa se ništa ne udvostručuje.</p>
+    <div class="field"><textarea id="iIn" rows="6" placeholder="Zalijepi ovdje…" aria-label="Podaci za uvoz"></textarea></div>
+    <div class="preview" id="iPreview"></div>
+    <button class="primary" type="button" id="iGo">Uvezi</button>
+    <div class="status" id="iStatus"></div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -651,6 +674,7 @@ function render(){
   renderPendingHome();
   setPhoneUI();
   planReminders();
+  setXferUI();
 
   buildPeople();
   document.querySelectorAll("[data-av]").forEach(a=>a.textContent=initial(names[+a.dataset.av]));
@@ -740,7 +764,7 @@ function renderWho(){
   });
 }
 function openSheet(){selWho=[...ALL];renderWho();updatePreview();$("sheet").classList.add("open");$("scrim").classList.add("open");$("status").textContent="";setTimeout(()=>$("billName").focus(),250)}
-function closeSheet(){$("sheet").classList.remove("open");$("gSheet").classList.remove("open");$("lSheet").classList.remove("open");$("rSheet").classList.remove("open");$("pSheet").classList.remove("open");$("scrim").classList.remove("open")}
+function closeSheet(){$("sheet").classList.remove("open");$("gSheet").classList.remove("open");$("lSheet").classList.remove("open");$("rSheet").classList.remove("open");$("pSheet").classList.remove("open");$("iSheet").classList.remove("open");$("scrim").classList.remove("open")}
 function gUpdate(){
   const sel=[...document.querySelectorAll("#pick input:checked")].map(x=>+x.value);
   $("gPreview").textContent=sel.length>=2?`Grupa vraća ${sel.length} od 4 dijela svakog računa.`:"Odaberi barem dvije osobe.";
@@ -1027,6 +1051,37 @@ function planReminders(){
   },1200);
 }
 document.addEventListener("visibilitychange",()=>{if(!document.hidden){lastPlan="";planReminders()}});
+
+// ---- moving data from the Claude artifact into the app
+function setXferUI(){
+  const sec=$("xferSec");if(!sec)return;
+  if(RO){sec.hidden=true;return}
+  sec.hidden=false;
+  if(IS_APP){$("xferTxt").textContent="Prenesi račune, imena, grupe i stalne režije iz Claude verzije u aplikaciju.";$("xferBtn").textContent="Uvezi podatke"}
+  else{$("xferTxt").textContent="Kopiraj sve podatke pa ih u Android aplikaciji zalijepi pod Mjeseci → Uvezi podatke.";$("xferBtn").textContent="Kopiraj podatke za aplikaciju"}
+}
+$("xferBtn").onclick=async()=>{
+  if(IS_APP){$("iIn").value="";$("iPreview").textContent="";$("iStatus").textContent="";$("iSheet").classList.add("open");$("scrim").classList.add("open");return}
+  const data=JSON.stringify({app:"kucne-rezije",v:1,names,groups,recurring:recList(),bills:bills.map(b=>{const {id,...rest}=b;return {id,...rest}})});
+  try{await navigator.clipboard.writeText(data);toast(`Kopirano: ${bills.length} računa`)}
+  catch(e){const t=$("xferOut");t.hidden=false;t.value=data;t.focus();t.select();toast("Označeno je, kopiraj ručno")}
+};
+function parseImport(){
+  try{const d=JSON.parse($("iIn").value.trim());if(d.app!=="kucne-rezije"||!Array.isArray(d.bills))throw 0;return d}catch(e){return null}
+}
+$("iIn").addEventListener("input",()=>{const d=parseImport();$("iPreview").textContent=d?`Spremno: ${d.bills.length} računa, ${(d.names||[]).join(", ")}`:($("iIn").value.trim()?"Ovo ne izgleda kao podaci iz Claude verzije.":"")});
+$("iGo").onclick=async()=>{
+  const d=parseImport();if(!d){$("iStatus").textContent="Podaci nisu ispravni. Kopiraj ih ponovno.";return}
+  $("iGo").disabled=true;$("iStatus").textContent="";
+  try{
+    await db.doc("settings/people").set({names:d.names,groups:d.groups||[]});
+    if(Array.isArray(d.recurring))await db.doc("settings/recurring").set({items:d.recurring});
+    let n=0;
+    for(const b of d.bills){const {id,...rest}=b;if(!id)continue;await db.doc("bills/"+id).set(rest);n++;$("iPreview").textContent=`Uvozim… ${n}/${d.bills.length}`}
+    closeSheet();toast(`Uvezeno: ${n} računa`);
+  }catch(e){$("iStatus").textContent="Uvoz je stao. Provjeri internet i prijavu pa pokušaj ponovno (već uvezeno se neće udvostručiti)."}
+  finally{$("iGo").disabled=false}
+};
 
 // One page, two homes: the Android app (Firebase + owner sign-in) or a Claude artifact
 const IS_APP=!!(window.RezijeBackend&&window.FIREBASE_CONFIG);
