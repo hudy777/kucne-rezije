@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build:web": "esbuild src/firebase.js --bundle --format=iife --minify --outfile=www/firebase-bundle.js",
+    "build:web": "python3 tools/build-index.py && esbuild src/app.js --bundle --format=iife --minify --outfile=www/firebase-bundle.js",
     "build": "npm run build:web && npx cap sync android"
   },
   "dependencies": {
     "@capacitor/android": "6.2.0",
     "@capacitor/core": "6.2.0",
+    "@capacitor/local-notifications": "6.1.2",
     "firebase": "10.14.1"
   },
   "devDependencies": {

@@ -1,0 +1,1080 @@
+<title>Kućne režije</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: phone-app shell — green gradient header with a glassy total card, white rounded cards below, fixed bottom bar with a central add button */
+:root{
+  --bg:#f3f6f2; --card:#ffffff; --card2:#f2f7f1; --ink:#14231a; --muted:#6c7b71; --line:#e3ebe2;
+  --g1:#0b3d22; --g2:#14612f; --g3:#1f8a3f; --g4:#3fb35a; --gl:#dff2e1;
+  --on-g:#ffffff; --on-g-muted:#bfe3c6;
+  --red:#e5484d; --redbg:#fde8e8; --ok:#1f8a3f; --okbg:#e2f4e4; --due:#c2570f; --duebg:#fdeedd;
+  --p1:#1f8a3f; --p2:#e0852b; --p3:#4c6fd1; --p4:#c04a8e;
+  --font:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif;
+  --shadow:0 1px 2px rgba(15,50,25,.05),0 10px 24px -14px rgba(15,50,25,.25);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c130e; --card:#151f18; --card2:#1b271e; --ink:#e7f0e9; --muted:#93a698; --line:#253328;
+  --g1:#062615; --g2:#0d4322; --g3:#1a7034; --g4:#4cc469; --gl:#173a20;
+  --on-g:#f1fbf3; --on-g-muted:#9fd1aa;
+  --red:#f26d71; --redbg:#3a1c1d; --ok:#5ed27b; --okbg:#173322; --due:#f2a463; --duebg:#3a2617;
+  --p1:#4cc469; --p2:#f0a057; --p3:#88a3f2; --p4:#e47fbb;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 28px -16px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c130e; --card:#151f18; --card2:#1b271e; --ink:#e7f0e9; --muted:#93a698; --line:#253328;
+  --g1:#062615; --g2:#0d4322; --g3:#1a7034; --g4:#4cc469; --gl:#173a20;
+  --on-g:#f1fbf3; --on-g-muted:#9fd1aa;
+  --red:#f26d71; --redbg:#3a1c1d; --ok:#5ed27b; --okbg:#173322; --due:#f2a463; --duebg:#3a2617;
+  --p1:#4cc469; --p2:#f0a057; --p3:#88a3f2; --p4:#e47fbb;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 28px -16px rgba(0,0,0,.7); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--g4);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+.app{max-width:560px;margin:0 auto;padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+.pad{padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+
+/* header */
+.top{background:radial-gradient(120% 90% at 100% 0%,var(--g3) 0%,transparent 55%),linear-gradient(170deg,var(--g2),var(--g1));
+  color:var(--on-g);border-radius:0 0 30px 30px;padding-block:22px 26px;position:relative;overflow:hidden}
+.top::before{content:"";position:absolute;inset:auto -40px -80px auto;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.05)}
+.top-row{display:flex;justify-content:space-between;align-items:center;gap:12px;position:relative}
+.hello h1{margin:0;font-size:1.45rem;font-weight:800;letter-spacing:-.02em}
+.hello p{margin:2px 0 0;color:var(--on-g-muted);font-size:.88rem}
+.month{display:flex;align-items:center;gap:2px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:3px}
+.month button{width:30px;height:30px;border-radius:50%;border:0;background:transparent;color:var(--on-g);font-size:1.15rem;cursor:pointer;line-height:1}
+.month button:hover{background:rgba(255,255,255,.15)}
+.month span{font-weight:700;font-size:.82rem;min-width:92px;text-align:center;text-transform:capitalize}
+
+.balance{position:relative;margin-top:20px;border-radius:22px;padding:18px 18px 20px;
+  background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.15);overflow:hidden}
+.balance .lbl{font-size:.85rem;color:var(--on-g-muted);font-weight:600}
+.balance .big{font-size:clamp(2.1rem,10vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-top:4px}
+.trend{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:.82rem;font-weight:600;color:var(--on-g-muted)}
+.trend b{color:#a8f0b6;font-weight:700} .trend b.up{color:#ffc2b8}
+.art{position:absolute;right:-6px;bottom:-10px;width:128px;height:128px;opacity:.95;pointer-events:none}
+@media (max-width:380px){.art{width:96px;height:96px;opacity:.5}}
+
+.top-actions{position:relative;display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.top-actions:not(:has(> :not([hidden]))){display:none}
+.ro-banner{display:inline-flex;align-items:center;gap:7px;font-size:.8rem;font-weight:700;color:var(--on-g);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);padding:7px 12px;border-radius:999px}
+.export{display:inline-flex;align-items:center;gap:7px;font:700 .82rem var(--font);color:var(--g1);background:#c6f5cf;border:0;padding:8px 14px;border-radius:999px;cursor:pointer}
+.export:hover{background:#dcfae1}
+.ghost{font:700 .8rem var(--font);color:var(--on-g);background:transparent;border:1px solid rgba(255,255,255,.25);padding:7px 14px;border-radius:999px;cursor:pointer}
+.top{padding-top:max(22px,env(safe-area-inset-top,0px))}
+body.ro #addLink,body.ro #groupLink,body.ro .del,body.ro .unlink{display:none!important}
+body.ro .toggle{cursor:default}
+body.ro .person input{pointer-events:none}
+/* section */
+.section{margin-top:22px}
+.sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
+.sec-head h2{margin:0;font-size:1.05rem;font-weight:800;letter-spacing:-.01em}
+.sec-head .meta{font-size:.82rem;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:4px}
+.card{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:16px}
+
+/* split card */
+.split{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+.stat .k{font-size:.8rem;color:var(--muted);font-weight:600}
+.stat .v{font-size:1.2rem;font-weight:800;letter-spacing:-.02em;margin-top:2px}
+.stat .line{height:4px;border-radius:9px;margin-top:8px;background:var(--line);overflow:hidden}
+.stat .line i{display:block;height:100%;border-radius:9px;transition:width .6s ease}
+.stat.r{text-align:right}
+.stat .ico{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;margin-top:12px;border:2px solid currentColor}
+.stat.l .ico{color:var(--g3)} .stat.r .ico{color:var(--due);margin-left:auto}
+.ring{position:relative;width:118px;height:118px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .c{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring .pct{font-size:1.5rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+.ring .sub{font-size:.72rem;color:var(--muted);font-weight:600;margin-top:2px}
+#ringArc{transition:stroke-dashoffset .8s ease}
+
+/* chart */
+.chart{display:grid;grid-template-columns:auto 1fr;gap:8px;padding-top:14px}
+.yax{display:flex;flex-direction:column;justify-content:space-between;font-size:.7rem;color:var(--muted);font-weight:600;text-align:right;height:150px;padding-bottom:0}
+.plot{position:relative;height:150px;border-bottom:1px solid var(--line)}
+.plot .grid{position:absolute;left:0;right:0;border-top:1px dashed var(--line)}
+.bars{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-around;gap:6px;padding:0 4px}
+.bar{flex:1;max-width:42px;border-radius:9px 9px 3px 3px;background:linear-gradient(180deg,var(--g4),var(--g3));position:relative;min-height:3px;transition:height .6s ease}
+.bar span{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:.66rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.xax{grid-column:2;display:flex;justify-content:space-around;gap:6px;padding:0 4px}
+.xax div{flex:1;max-width:58px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.68rem;color:var(--muted);font-weight:600;text-align:center;min-width:0}
+.xax .ic{width:18px;height:18px;color:var(--ink)}
+.xax .xwho{font-weight:800;font-size:.64rem;margin-top:-2px}
+.xax div span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.chart-empty{text-align:center;color:var(--muted);padding:26px 8px;font-size:.9rem}
+
+/* people */
+.people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.person{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.p-head{display:flex;align-items:center;gap:9px;min-width:0}
+.avatar{flex:none;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font-weight:800;color:#fff;background:var(--pc)}
+.person input{min-width:0;flex:1;font:700 .95rem var(--font);color:var(--ink);background:transparent;border:0;border-bottom:1px dashed transparent;padding:2px 0}
+.person input:hover{border-bottom-color:var(--line)}
+.person input:focus{outline:none;border-bottom-color:var(--pc)}
+.owe{font-size:1.15rem;font-weight:800;letter-spacing:-.02em}
+.mini{height:5px;border-radius:9px;background:var(--card2);overflow:hidden}
+.mini i{display:block;height:100%;width:0;background:var(--pc);border-radius:9px;transition:width .6s ease}
+.chip{font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:99px;width:fit-content;background:var(--card2);color:var(--muted)}
+.chip.ok{background:var(--okbg);color:var(--ok)} .chip.due{background:var(--duebg);color:var(--due)}
+
+.person.group{grid-column:1/-1;background:linear-gradient(135deg,var(--gl),var(--card) 70%)}
+.stack{display:flex;flex:none}
+.stack .avatar{width:32px;height:32px;border-radius:50%;border:2.5px solid var(--card);font-size:.85rem}
+.stack .avatar+.avatar{margin-left:-10px}
+.g-row{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap}
+.g-members{font-size:.78rem;color:var(--muted);font-weight:600}
+.g-tag{font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--g3);background:var(--card);padding:2px 7px;border-radius:6px}
+.unlink{background:none;border:0;color:var(--muted);font:600 .76rem var(--font);cursor:pointer;padding:4px 6px;border-radius:8px}
+.unlink:hover{background:var(--card)}
+.unlink.armed{color:var(--red);background:var(--redbg)}
+.pick{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.pick label{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1.5px solid var(--line);border-radius:14px;cursor:pointer;font-weight:700}
+.pick label:has(input:checked){border-color:var(--g3);background:var(--gl)}
+.pick input{width:20px;height:20px;accent-color:var(--g3)}
+.pick .avatar{width:30px;height:30px;border-radius:10px;font-size:.85rem}
+.pick .s{margin-left:auto;font-size:.78rem;color:var(--muted);font-weight:600}
+.who{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:380px){.who{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.who button{display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 4px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--muted);font:700 .76rem var(--font);cursor:pointer;min-width:0;position:relative}
+.who button .avatar{width:30px;height:30px;border-radius:50%;font-size:.85rem;opacity:.35;filter:grayscale(1)}
+.who button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.who button[aria-pressed="true"]{border-color:var(--g3);background:var(--gl);color:var(--ink)}
+.who button[aria-pressed="true"] .avatar{opacity:1;filter:none}
+/* bills */
+.bill{display:flex;flex-direction:column;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
+.bill:first-child{border-top:0;padding-top:2px}
+.bill:last-child{padding-bottom:2px}
+.b-top{display:flex;align-items:center;gap:12px}
+.tile{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--gl);color:var(--g3)}
+.tile .ic{width:22px;height:22px}
+.b-main{flex:1;min-width:0}
+.b-name{font-weight:700;overflow-wrap:anywhere}
+.b-meta{font-size:.78rem;color:var(--muted);margin-top:1px}
+.b-amt{text-align:right;font-weight:800;white-space:nowrap}
+.b-amt small{display:block;font-weight:600;font-size:.72rem;color:var(--muted)}
+.b-amt.neg{color:var(--red)}
+.toggles{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-left:56px}
+@media (max-width:400px){.toggles{padding-left:0}}
+.toggle{display:inline-flex;align-items:center;gap:6px;font:700 .78rem var(--font);padding:4px 10px 4px 4px;border-radius:999px;border:1px dashed var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.toggle .dot{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:.66rem;font-weight:800;color:#fff;background:var(--pc);opacity:.4}
+.toggle .amt{color:var(--muted);font-weight:600}
+.toggle[aria-pressed="true"]{border-style:solid;border-color:transparent;background:var(--okbg);color:var(--ok)}
+.toggle[aria-pressed="true"] .dot{opacity:1}
+.toggle[aria-pressed="true"] .amt{color:var(--ok);text-decoration:line-through}
+.del{margin-left:auto;font:600 .76rem var(--font);background:none;border:0;color:var(--muted);cursor:pointer;padding:5px 8px;border-radius:8px}
+.del.armed{color:var(--red);background:var(--redbg)}
+.empty{text-align:center;color:var(--muted);padding:22px 8px;font-size:.9rem}
+.linkbtn{background:none;border:0;color:var(--g3);font-weight:700;font-size:.82rem;cursor:pointer;padding:0}
+
+/* bottom bar */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:20;padding-bottom:env(safe-area-inset-bottom,0px);
+  padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));
+  background:linear-gradient(180deg,var(--g2),var(--g1));border-radius:24px 24px 0 0;box-shadow:0 -8px 30px -12px rgba(0,0,0,.35)}
+.dock nav{max-width:560px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 84px 1fr 1fr;align-items:center;height:70px}
+.dock .nav{display:flex;flex-direction:column;align-items:center;gap:3px;font:600 .68rem var(--font);color:var(--on-g-muted);background:none;border:0;padding:6px 0;cursor:pointer}
+.dock .nav .ic{width:22px;height:22px;color:inherit}
+.dock .nav.on{color:#c6f5cf}
+.nic{position:relative;display:block;height:22px}
+.lockb{position:absolute;right:-7px;top:-4px;width:15px;height:15px;border-radius:50%;background:var(--g1);border:1.5px solid var(--on-g-muted);display:none;place-items:center;color:var(--on-g)}
+body.ro .lockb{display:grid}
+.hint{font-size:.8rem;color:var(--muted);margin:10px 4px 0}
+.pending-card{display:flex;gap:12px;align-items:center;background:var(--duebg)}
+.pending-card .pc-ic{flex:none;width:40px;height:40px;border-radius:12px;background:var(--card);color:var(--due);display:grid;place-items:center}
+.pc-t{font-weight:800;color:var(--due);font-size:.9rem}
+.pc-s{font-size:.85rem;color:var(--ink);margin-top:1px}
+.rec-row{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.rec-row:first-child{border-top:0;padding-top:2px}
+.rec-row .tile{width:40px;height:40px;border-radius:12px}
+.rec-row .rn{font-weight:700;font-size:.92rem;overflow-wrap:anywhere}
+.rec-row .rs{font-size:.75rem;color:var(--muted)}
+.rec-row.done .tile{background:var(--okbg);color:var(--ok)}
+.rec-row.done .rs{color:var(--ok);font-weight:700}
+.rec-in{display:flex;gap:6px;align-items:center}
+.rec-in input{width:88px;font:700 .95rem var(--font);padding:9px 10px;border:1.5px solid var(--line);border-radius:12px;background:var(--card2);color:var(--ink);text-align:right}
+.rec-in input:focus{outline:none;border-color:var(--g3);background:var(--card)}
+.rec-in button,.rec-all{font:700 .8rem var(--font);padding:9px 12px;border-radius:12px;border:0;background:var(--g3);color:#fff;cursor:pointer}
+.rec-amt{font-weight:800;white-space:nowrap}
+.rec-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-top:12px;margin-top:4px;border-top:1px solid var(--line)}
+.rec-foot span{font-size:.8rem;color:var(--muted);font-weight:600}
+.rec-all{padding:10px 16px}
+body.ro .rec-in,body.ro .rec-foot,body.ro #recEdit{display:none!important}
+.tag{display:inline-block;font-size:.64rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--g3);background:var(--gl);padding:1px 6px;border-radius:5px;margin-left:6px;vertical-align:2px}
+.r-item{border:1.5px solid var(--line);border-radius:14px;padding:10px;margin-bottom:10px;display:flex;flex-direction:column;gap:8px}
+.r-top{display:grid;grid-template-columns:1fr 100px 32px;gap:8px;align-items:center}
+.r-top input{font:600 .92rem var(--font);padding:10px;border:1.5px solid var(--line);border-radius:10px;background:var(--card2);color:var(--ink);width:100%;min-width:0}
+.r-top input:focus{outline:none;border-color:var(--g3)}
+.r-del{width:32px;height:32px;border-radius:9px;border:0;background:var(--redbg);color:var(--red);cursor:pointer;font-weight:800}
+.r-who{display:flex;gap:6px;flex-wrap:wrap}
+.r-who button{display:inline-flex;align-items:center;gap:5px;font:700 .74rem var(--font);padding:3px 9px 3px 3px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer}
+.r-who button .avatar{width:20px;height:20px;border-radius:50%;font-size:.62rem;opacity:.35;filter:grayscale(1)}
+.r-who button[aria-pressed="true"]{border-color:var(--g3);background:var(--gl);color:var(--ink)}
+.r-who button[aria-pressed="true"] .avatar{opacity:1;filter:none}
+body.ro #namesHint{display:none}
+.yswitch{display:flex;align-items:center;gap:2px;background:var(--card);border-radius:999px;padding:3px;box-shadow:var(--shadow)}
+.yswitch button{width:28px;height:28px;border-radius:50%;border:0;background:transparent;color:var(--ink);font-size:1.05rem;cursor:pointer;line-height:1}
+.yswitch button:hover{background:var(--card2)}
+.yswitch span{font-weight:800;min-width:46px;text-align:center;font-size:.9rem}
+.ystats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:420px){.ystats{grid-template-columns:1fr 1fr}.ystats>div:first-child{grid-column:1/-1}}
+.ystats .k{font-size:.78rem;color:var(--muted);font-weight:600}
+.ystats .v{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;margin-top:2px;text-transform:capitalize}
+.ystats>div:first-child .v{font-size:1.6rem;color:var(--g3)}
+.ycmp{grid-column:1/-1;font-size:.82rem;color:var(--muted);font-weight:600;border-top:1px solid var(--line);padding-top:10px}
+.ycmp:empty{display:none}
+.ycmp b.up{color:var(--due)} .ycmp b.down{color:var(--ok)}
+.bars.y12{gap:3px;padding:0 2px}
+.bars.y12 .bar{max-width:24px;border-radius:6px 6px 2px 2px}
+.bars.y12 .bar.zero{background:var(--line)}
+.bars.y12 .bar.max{background:linear-gradient(180deg,#f2c94c,#d79a1c)}
+.xax.y12{gap:3px;padding:0 2px}
+.xax.y12 div{font-size:.62rem;text-transform:capitalize}
+.cat-row{display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.cat-row:first-child{border-top:0;padding-top:2px}
+.cat-row .tile{width:40px;height:40px;border-radius:12px}
+.cat-row .cn{font-weight:700;font-size:.92rem;display:flex;justify-content:space-between;gap:8px}
+.cat-row .cn span{color:var(--muted);font-weight:600;font-size:.78rem}
+.cat-row .cb{height:6px;border-radius:9px;background:var(--card2);margin-top:6px;overflow:hidden}
+.cat-row .cb i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--g4),var(--g3))}
+.cat-row .ca{font-weight:800;white-space:nowrap}
+.month-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-bottom:0;font-family:inherit;color:var(--ink);cursor:pointer;text-align:left}
+.month-row:first-child{border-top:0;padding-top:2px}
+.month-row .mi{flex:none;width:44px;height:44px;border-radius:14px;background:var(--gl);color:var(--g3);display:grid;place-items:center;font-weight:800;font-size:.8rem;text-transform:uppercase}
+.month-row.cur .mi{background:var(--g3);color:#fff}
+.month-row .mm{flex:1;min-width:0}
+.month-row .mn{font-weight:700;text-transform:capitalize}
+.month-row .ms{font-size:.78rem;color:var(--muted)}
+.month-row .mt{text-align:right;font-weight:800;white-space:nowrap}
+.month-row .mt small{display:block;font-weight:600;font-size:.72rem}
+.fab{justify-self:center;width:62px;height:62px;border-radius:50%;border:5px solid var(--bg);background:linear-gradient(160deg,var(--g4),var(--g3));color:#fff;
+  display:grid;place-items:center;cursor:pointer;transform:translateY(-22px);box-shadow:0 10px 20px -6px rgba(20,97,47,.6)}
+.fab:active{transform:translateY(-22px) scale(.95)}
+
+/* sheet */
+.scrim{position:fixed;inset:0;z-index:30;background:rgba(5,20,10,.45);opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.open{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:31;background:var(--card);border-radius:26px 26px 0 0;
+  padding-top:10px;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px));
+  padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));
+  transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);max-height:92%;overflow:auto}
+.sheet.open{transform:none}
+.sheet-in{max-width:560px;margin:0 auto}
+.grab{width:42px;height:5px;border-radius:9px;background:var(--line);margin:0 auto 14px}
+.sheet h3{margin:0 0 14px;font-size:1.15rem;font-weight:800}
+.presets{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:16px}
+.preset{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:600 .72rem var(--font);cursor:pointer;min-width:0}
+.preset .ic{width:22px;height:22px;color:var(--g3)}
+.preset span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.preset.sel{border-color:var(--g3);background:var(--gl)}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.field label{font-size:.78rem;font-weight:700;color:var(--muted)}
+.field input{font:600 1rem var(--font);padding:13px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--card2);color:var(--ink);width:100%}
+.field input:focus{outline:none;border-color:var(--g3);background:var(--card)}
+.amt-in{position:relative}
+.amt-in input{font-size:1.5rem;font-weight:800;padding-right:40px}
+.amt-in span{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-weight:800;color:var(--muted);font-size:1.2rem}
+.preview{font-size:.88rem;color:var(--muted);min-height:1.4em;margin-bottom:12px}
+.preview b{color:var(--g3)}
+.primary{width:100%;font:800 1rem var(--font);padding:15px;border:0;border-radius:16px;background:linear-gradient(160deg,var(--g4),var(--g3));color:#fff;cursor:pointer}
+.status{font-size:.85rem;font-weight:700;color:var(--red);min-height:1.2em;margin-top:8px;text-align:center}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);z-index:40;background:var(--ink);color:var(--bg);
+  font-weight:700;font-size:.85rem;padding:10px 16px;border-radius:999px;opacity:0;transition:.25s;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+
+
+<div class="app">
+  <header class="top pad">
+    <div class="top-row">
+      <div class="hello"><h1 id="greet">Bok 👋</h1><p id="pageSub">Pregled kućnih režija</p></div>
+      <div class="month">
+        <button id="prev" aria-label="Prethodni mjesec">‹</button>
+        <span id="monthLabel">—</span>
+        <button id="next" aria-label="Sljedeći mjesec">›</button>
+      </div>
+    </div>
+    <div class="balance" id="balance">
+      <div class="lbl">Stalne režije ovaj mjesec</div>
+      <div class="big num" id="total">0,00 €</div>
+      <div class="trend" id="trend" hidden></div>
+      <svg class="art" viewBox="0 0 128 128" aria-hidden="true">
+        <defs><linearGradient id="ga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fd889"/><stop offset="1" stop-color="#1f8a3f"/></linearGradient>
+        <linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eafbe9"/><stop offset="1" stop-color="#bfe8c6"/></linearGradient></defs>
+        <rect x="38" y="14" width="56" height="74" rx="6" fill="url(#gb)" transform="rotate(10 66 51)"/>
+        <g transform="rotate(10 66 51)" stroke="#1f8a3f" stroke-width="3" stroke-linecap="round" opacity=".7"><path d="M48 32h30M48 44h30M48 56h20"/></g>
+        <path d="M18 60l40-30 40 30v48a6 6 0 0 1-6 6H24a6 6 0 0 1-6-6z" fill="url(#ga)"/>
+        <path d="M12 64l46-35 46 35" fill="none" stroke="#a8f0b6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="48" y="80" width="20" height="34" rx="3" fill="#0d4322" opacity=".55"/>
+        <circle cx="96" cy="94" r="18" fill="#f2c94c"/><text x="96" y="101" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="20" fill="#7a5a00">€</text>
+      </svg>
+    </div>
+    <div class="top-actions">
+      <button class="ghost" id="loginBtn" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" style="vertical-align:-2px"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Prijava</button>
+      <button class="ghost" id="logoutBtn" hidden>Odjava</button>
+      <button class="ghost" id="phoneBtn" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg> <span id="phoneTxt">Obavijesti</span></button>
+      <div class="ro-banner" id="roBanner" hidden><span id="roText"></span></div>
+    </div>
+  </header>
+
+  <main class="pad">
+    <div class="page" data-page="pregled">
+      <section class="section" id="pendingHome" hidden>
+        <div class="card pending-card"><div class="pc-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <div><div class="pc-t">Još čeka upis</div><div class="pc-s" id="pendingText"></div></div></div>
+      </section>
+      <section class="section">
+        <div class="sec-head"><h2>Povrat od ukućana</h2><span class="meta" id="mLbl2">Ovaj mjesec</span></div>
+        <div class="card split">
+        <div class="stat l">
+          <div class="k">Vraćeno</div>
+          <div class="v num" id="backAmt">0,00 €</div>
+          <div class="line"><i id="lineBack" style="background:var(--g3);width:0"></i></div>
+          <div class="ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+        </div>
+        <div class="ring" role="img" id="ringWrap" aria-label="Vraćeno 0 posto">
+          <svg viewBox="0 0 120 120"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--g4)"/><stop offset="1" style="stop-color:var(--g2)"/></linearGradient></defs>
+            <circle cx="60" cy="60" r="50" fill="none" style="stroke:var(--line)" stroke-width="12"/>
+            <circle id="ringArc" cx="60" cy="60" r="50" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="314.16" stroke-dashoffset="314.16"/></svg>
+          <div class="c"><div><div class="pct num" id="pct">0%</div><div class="sub">vraćeno</div></div></div>
+        </div>
+        <div class="stat r">
+          <div class="k">Još duguju</div>
+          <div class="v num" id="owedAmt">0,00 €</div>
+          <div class="line"><i id="lineOwed" style="background:var(--due);width:0;margin-left:auto"></i></div>
+          <div class="ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+        </div>
+      </div>
+    </section>
+      <section class="section">
+        <div class="sec-head"><h2>Ukućani</h2><button class="linkbtn" id="groupLink">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-2px"><circle cx="8" cy="12" r="4"/><circle cx="16" cy="12" r="4"/></svg> Spoji u grupu</button></div>
+        <div class="people" id="people"></div>
+        <p class="hint" id="namesHint">Klikni na ime za promjenu.</p>
+      </section>
+      <section class="section">
+        <div class="sec-head"><h2>Po kategoriji</h2><span class="meta" id="mLbl3">Ovaj mjesec</span></div>
+        <div class="card" id="chartCard"></div>
+      </section>
+    </div>
+
+    <div class="page" data-page="godina" hidden>
+      <section class="section">
+        <div class="sec-head"><h2>Stalne režije u godini</h2>
+          <div class="yswitch"><button id="yprev" aria-label="Prethodna godina">‹</button><span id="yLabel" class="num">2026</span><button id="ynext" aria-label="Sljedeća godina">›</button></div></div>
+        <div class="card ystats">
+          <div><div class="k">Ukupno stalne režije</div><div class="v num" id="yTotal">0,00 €</div></div>
+          <div><div class="k">Prosjek po mjesecu</div><div class="v num" id="yAvg">0,00 €</div></div>
+          <div><div class="k">Najskuplji mjesec</div><div class="v" id="yMax">—</div></div>
+          <div class="ycmp" id="yCmp"></div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="sec-head"><h2>Po mjesecima</h2><span class="meta" id="yMeta"></span></div>
+        <div class="card" id="yChart"></div>
+      </section>
+      <section class="section">
+        <div class="sec-head"><h2>Po kategoriji</h2><span class="meta" id="yMeta2"></span></div>
+        <div class="card" id="yCats"></div>
+      </section>
+    </div>
+
+    <div class="page" data-page="racuni" hidden>
+      <section class="section">
+        <div class="sec-head"><h2>Stalne režije</h2><button class="linkbtn" id="recEdit">Uredi popis</button></div>
+        <div class="card" id="recCard"></div>
+      </section>
+      <section class="section">
+        <div class="sec-head"><h2>Računi u mjesecu</h2><button class="linkbtn" id="addLink">+ Ostalo</button></div>
+        <div class="card"><div id="bills"><div class="empty">Učitavanje…</div></div></div>
+        <p class="hint">Klikni na osobu kad ti vrati svoj dio.</p>
+      </section>
+    </div>
+
+    <div class="page" data-page="mjeseci" hidden>
+      <section class="section">
+        <div class="sec-head"><h2>Svi mjeseci</h2><span class="meta">Odaberi mjesec</span></div>
+        <div class="card"><div id="months"></div></div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div class="dock"><nav aria-label="Navigacija">
+  <button class="nav on" data-go="pregled"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Početna</button>
+  <button class="nav" data-go="godina"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Pregled</button>
+  <button class="fab" id="fab" aria-label="Dodaj račun"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+  <button class="nav" data-go="racuni"><span class="nic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg><span class="lockb" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span>Računi</button>
+  <button class="nav" data-go="mjeseci"><span class="nic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span class="lockb" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span>Mjeseci</button>
+</nav></div>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetH">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 id="sheetH">Novi račun</h3>
+    <div class="presets" id="presets"></div>
+    <form id="addForm" autocomplete="off">
+      <div class="field"><label for="billName">Naziv</label><input id="billName" placeholder="npr. Struja" maxlength="60"></div>
+      <div class="field"><label for="billAmt">Iznos</label><div class="amt-in"><input id="billAmt" inputmode="decimal" placeholder="0,00"><span>€</span></div></div>
+      <div class="field"><label>Na koga se odnosi</label><div class="who" id="whoPick"></div></div>
+      <div class="preview" id="preview">Iznos se dijeli na 4 osobe.</div>
+      <button class="primary" type="submit">Dodaj račun</button>
+      <div class="status" id="status"></div>
+    </form>
+  </div>
+</div>
+<div class="sheet" id="gSheet" role="dialog" aria-modal="true" aria-labelledby="gSheetH">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 id="gSheetH">Spoji u grupu</h3>
+    <p class="preview" style="margin-top:-6px">Odaberi tko plaća zajedno, npr. par. Svatko i dalje ima svoju četvrtinu, ali grupa vraća zbroj i označava se jednim klikom.</p>
+    <div class="pick" id="pick"></div>
+    <div class="field"><label for="gName">Naziv grupe (nije obavezno)</label><input id="gName" placeholder="npr. Ana i Marko" maxlength="30"></div>
+    <div class="preview" id="gPreview"></div>
+    <button class="primary" type="button" id="gSave">Spoji</button>
+    <div class="status" id="gStatus"></div>
+  </div>
+</div>
+<div class="sheet" id="lSheet" role="dialog" aria-modal="true" aria-labelledby="lSheetH">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 id="lSheetH">Otključaj</h3>
+    <p class="preview" style="margin-top:-6px">Računi, Mjeseci i dodavanje računa zaključani su. Početna i Pregled otvoreni su svima.</p>
+    <form id="lForm" autocomplete="on">
+      <div class="field"><label for="lEmail">Email</label><input id="lEmail" type="email" autocomplete="username" inputmode="email"></div>
+      <div class="field"><label for="lPass">Lozinka</label><input id="lPass" type="password" autocomplete="current-password"></div>
+      <button class="primary" type="submit" id="lSubmit">Otključaj</button>
+      <div class="status" id="lStatus"></div>
+    </form>
+  </div>
+</div>
+<div class="sheet" id="rSheet" role="dialog" aria-modal="true" aria-labelledby="rSheetH">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 id="rSheetH">Stalne režije</h3>
+    <p class="preview" style="margin-top:-6px">Pojavljuju se svaki mjesec. Ako je iznos uvijek isti, upiši ga i dodaje se jednim klikom. Ako se mijenja, ostavi prazno.</p>
+    <p class="preview" style="margin-top:-4px">Promjena osoba vrijedi od <b id="rFrom"></b> nadalje. Raniji mjeseci ostaju kakvi su bili.</p>
+    <div id="rList"></div>
+    <button class="linkbtn" id="rAdd" style="margin:4px 0 16px">+ Nova stalna režija</button>
+    <button class="primary" type="button" id="rSave">Spremi popis</button>
+    <div class="status" id="rStatus"></div>
+  </div>
+</div>
+<div class="sheet" id="pSheet" role="dialog" aria-modal="true" aria-labelledby="pSheetH">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 id="pSheetH">Čiji je ovo mobitel?</h3>
+    <p class="preview" style="margin-top:-6px">Od 10. u mjesecu, svaki dan u 12:00, stiže podsjetnik koliko duguješ za režije. Prestaje kad se označi da si platio.</p>
+    <div class="who" id="phonePick"></div>
+    <button class="linkbtn" id="phoneNone" style="margin-top:14px">Ne želim obavijesti</button>
+    <div class="status" id="pStatus"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// Captured before anything renders, so the export can rebuild a clean copy of this page
+const SNAP=window.__SNAPSHOT__||null;
+const PRISTINE=(()=>{const c=document.body.cloneNode(true);c.querySelectorAll("script,style,link,title,meta").forEach(s=>s.remove());return c.innerHTML})();
+const STYLE_SRC=[...document.querySelectorAll("style")].map(s=>s.textContent).find(t=>t.includes("--g1"))||"";
+const SCRIPT_SRC=document.currentScript?document.currentScript.textContent:"";
+let RO=true;
+const ICONS={
+  bolt:'<path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>',
+  drop:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+  flame:'<path d="M12 22c4 0 7-2.7 7-7 0-4-3-6-4-9-1 2-2 3-3.5 3.5C11 7 10 4 9 2c-2 4-4 7-4 13 0 4.3 3 7 7 7z"/>',
+  wifi:'<path d="M2 9a15 15 0 0 1 20 0"/><path d="M5.5 12.5a10 10 0 0 1 13 0"/><path d="M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="19.5" r="1"/>',
+  building:'<rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2M10 21v-3h4v3"/>',
+  trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14"/><path d="M10 11v6M14 11v6"/>',
+  heat:'<path d="M14 14V5a2 2 0 0 0-4 0v9a4 4 0 1 0 4 0z"/><path d="M12 9v6"/>',
+  tv:'<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M8 21h8M8 2l4 4 4-4"/>',
+  receipt:'<path d="M6 2h12v20l-3-2-3 2-3-2-3 2V2z"/><path d="M9 7h6M9 11h6M9 15h4"/>'
+};
+const CATS=[
+  {k:"bolt",m:["struj","hep","elektr"],label:"Struja"},
+  {k:"drop",m:["vod"],label:"Voda"},
+  {k:"flame",m:["plin","gas"],label:"Plin"},
+  {k:"wifi",m:["internet","wifi","net","a1","telekom","optika"],label:"Internet"},
+  {k:"building",m:["pričuv","pricuv","zgrad","održav"],label:"Pričuva"},
+  {k:"trash",m:["smeć","smec","otpad","odvoz","čistoć"],label:"Smeće"},
+  {k:"heat",m:["grij","toplin"],label:"Grijanje"},
+  {k:"tv",m:["tv","hrt","pristojb"],label:"RTV"}
+];
+const OTHER={k:"receipt",label:"Ostalo"};
+const catFor=n=>{const s=(n||"").toLowerCase();return CATS.find(c=>c.m.some(m=>s.includes(m)))||OTHER};
+const icon=(k,s=22)=>`<svg class="ic" viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg>`;
+
+const DEFAULT_NAMES=["Ja","Osoba 2","Osoba 3","Osoba 4"];
+const PCOL=["var(--p1)","var(--p2)","var(--p3)","var(--p4)"];
+const fmt=n=>new Intl.NumberFormat("hr-HR",{style:"currency",currency:"EUR"}).format(n);
+const fmt0=n=>new Intl.NumberFormat("hr-HR",{maximumFractionDigits:0}).format(n)+" €";
+const ym=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+const MONTHS=["siječanj","veljača","ožujak","travanj","svibanj","lipanj","srpanj","kolovoz","rujan","listopad","studeni","prosinac"];
+const initial=n=>((n||"").trim().charAt(0)||"?").toUpperCase();
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let cur=new Date(); cur.setDate(1);
+let bills=[]; let names=[...DEFAULT_NAMES]; let groups=[]; let db=null;
+// Standing monthly bills; defaults show until the owner saves their own list
+const DEFAULT_REC=[["struja","Struja"],["voda","Voda"],["smece","Odvoz smeća"],["internet","Internet"],["rtv","RTV pristojba"]].map(([id,name])=>({id,name,amount:null,who:[0,1,2,3]}));
+let recurring=null;
+const recList=()=>recurring||DEFAULT_REC;
+// Who shares a standing bill in a given month: earlier periods are kept in r.prev [{until:"YYYY-MM", who}]
+function whoForRec(r,m){const p=(r.prev||[]).filter(x=>m<=x.until).sort((a,b)=>a.until<b.until?-1:1)[0];return p?p.who:(r.who&&r.who.length?r.who:[0,1,2,3])}
+function prevMonth(m){const [y,mm]=m.split("-").map(Number);const d=new Date(y,mm-2,1);return ym(d)}
+// A "unit" is whoever settles up together: you, a group, or a single housemate
+function units(){
+  const inG=new Set(groups.flatMap(g=>g.members));
+  const u=[{type:"me",members:[0]}];
+  [1,2,3].forEach(i=>{if(!inG.has(i))u.push({type:"person",members:[i]})});
+  groups.forEach((g,gi)=>u.push({type:"group",gi,members:g.members}));
+  return u;
+}
+const groupName=g=>(g.name&&g.name.trim())||g.members.map(m=>names[m]).join(" i ");
+const unitName=u=>u.type==="group"?groupName(groups[u.gi]):names[u.members[0]];
+const $=id=>document.getElementById(id);
+
+
+
+// Split in cents among the people the bill applies to; leftover cents go to the payer when included, else to the first participant
+const ALL=[0,1,2,3];
+const whoOf=b=>Array.isArray(b&&b.who)&&b.who.length?b.who:ALL;
+function shares(a,who=ALL){const n=who.length,c=Math.round(a*100),base=Math.floor(c/n),r=c-base*n;const out=[0,0,0,0];
+  who.forEach(i=>out[i]=base);out[who.includes(0)?0:who[0]]+=r;return out.map(x=>x/100)}
+function parseAmt(s){s=String(s).trim().replace(/\s/g,"").replace("€","");if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");const n=parseFloat(s);return isFinite(n)&&n>0?Math.round(n*100)/100:null}
+
+// storage
+const LS="rezije-local-v1";
+function lsLoad(){try{const o=JSON.parse(localStorage.getItem(LS)||"{}");bills=o.bills||[];names=o.names||names;groups=o.groups||[];recurring=o.recurring||null}catch(e){}}
+function lsSave(){try{localStorage.setItem(LS,JSON.stringify({bills,names,groups,recurring}))}catch(e){}}
+async function addBill(b){if(db)await db.collection("bills").add(b);else{b.id="b"+Date.now();bills.push(b);lsSave();render()}}
+async function patchBill(id,p){if(db)await db.doc("bills/"+id).update(p);else{Object.assign(bills.find(b=>b.id===id),p);lsSave();render()}}
+async function removeBill(id){if(db)await db.doc("bills/"+id).delete();else{bills=bills.filter(b=>b.id!==id);lsSave();render()}}
+let nameTimer;
+async function savePeopleNow(){if(db){try{await db.doc("settings/people").set({names,groups})}catch(e){toast("Promjena nije spremljena")}}else lsSave()}
+function saveNames(){clearTimeout(nameTimer);nameTimer=setTimeout(savePeopleNow,600)}
+let toastT;function toast(t){const el=$("toast");el.textContent=t;el.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("show"),2600)}
+
+const listFor=m=>bills.filter(b=>b.month===m).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+const currentList=()=>listFor(ym(cur));
+
+let builtKey=null, unlinkArmed=null;
+function buildPeople(){
+  const key=JSON.stringify(groups.map(g=>g.members));
+  if(key===builtKey)return; builtKey=key;
+  const U=units();
+  $("people").innerHTML=U.map((u,ui)=>{
+    if(u.type==="group"){
+      return `<div class="person group" style="--pc:${PCOL[u.members[0]]}">
+        <div class="p-head"><div class="stack">${u.members.map(m=>`<div class="avatar" style="background:${PCOL[m]}" data-av="${m}"></div>`).join("")}</div>
+          <input id="gname${u.gi}" aria-label="Naziv grupe" maxlength="30"><span class="g-tag">Grupa</span></div>
+        <div class="g-row"><div><div class="owe num" id="uowe${ui}"></div><div class="g-members" id="gmem${u.gi}"></div></div>
+          <button class="unlink" id="unlink${u.gi}">Razdvoji</button></div>
+        <div class="mini"><i id="umini${ui}"></i></div><span class="chip" id="uchip${ui}"></span></div>`;
+    }
+    const i=u.members[0];
+    return `<div class="person" style="--pc:${PCOL[i]}">
+      <div class="p-head"><div class="avatar" data-av="${i}"></div><input id="name${i}" aria-label="Ime osobe ${i+1}" maxlength="20"></div>
+      <div class="owe num" id="uowe${ui}"></div><div class="mini"><i id="umini${ui}"></i></div><span class="chip" id="uchip${ui}"></span></div>`;
+  }).join("");
+  U.forEach(u=>{
+    if(u.type==="group"){
+      $("gname"+u.gi).addEventListener("input",e=>{groups[u.gi].name=e.target.value;saveNames();renderBills(currentList())});
+      $("unlink"+u.gi).onclick=async e=>{
+        if(unlinkArmed!==u.gi){unlinkArmed=u.gi;e.target.textContent="Sigurno razdvojiti?";e.target.classList.add("armed");
+          setTimeout(()=>{if(unlinkArmed===u.gi){unlinkArmed=null;const b=$("unlink"+u.gi);if(b){b.textContent="Razdvoji";b.classList.remove("armed")}}},3000);return}
+        unlinkArmed=null;groups.splice(u.gi,1);await savePeopleNow();render();toast("Grupa razdvojena");
+      };
+    }else{
+      const i=u.members[0];
+      $("name"+i).addEventListener("input",e=>{names[i]=e.target.value.trim()||DEFAULT_NAMES[i];document.querySelectorAll(`[data-av="${i}"]`).forEach(a=>a.textContent=initial(names[i]));saveNames();renderBills(currentList())});
+    }
+  });
+  const free=[1,2,3].filter(i=>!groups.some(g=>g.members.includes(i)));
+  $("groupLink").hidden=free.length<2;
+  applyRO();
+}
+function applyRO(){
+  document.body.classList.toggle("ro",RO);
+  document.querySelectorAll(".person input").forEach(x=>{x.readOnly=RO;x.tabIndex=RO?-1:0});
+  $("roBanner").hidden=!RO;
+  if(SNAP)$("roText").textContent="Stanje na dan "+new Date(SNAP.exportedAt).toLocaleDateString("hr-HR")+" · samo za pregled";
+}
+function setRO(v){if(RO===v)return;RO=v;builtKey=null;closeSheet();render()}
+
+function render(){
+  const mname=MONTHS[cur.getMonth()]+" "+cur.getFullYear();
+  $("monthLabel").textContent=MONTHS[cur.getMonth()].slice(0,3)+" "+cur.getFullYear();
+  $("mLbl2").textContent=$("mLbl3").textContent=mname.charAt(0).toUpperCase()+mname.slice(1);
+  const list=currentList();
+  const total=list.reduce((s,b)=>s+b.amount,0);
+  const owed=[0,0,0,0],due=[0,0,0,0];
+  list.forEach(b=>{const sh=shares(b.amount,whoOf(b));due[0]+=sh[0];[1,2,3].forEach(i=>{due[i]+=sh[i];if(sh[i]&&!(b.paid&&b.paid["p"+(i+1)]))owed[i]+=sh[i]})});
+  const mine=due[0];
+  const dueAll=due[1]+due[2]+due[3],owedAll=owed[1]+owed[2]+owed[3],back=dueAll-owedAll;
+  // the headline counts standing bills only
+  const recTotal=list.filter(b=>b.rid).reduce((s,b)=>s+b.amount,0);
+  $("total").textContent=fmt(recTotal);
+
+  // trend vs previous month (standing bills too)
+  const pd=new Date(cur);pd.setMonth(pd.getMonth()-1);
+  const prev=listFor(ym(pd)).filter(b=>b.rid).reduce((s,b)=>s+b.amount,0);
+  if(prev>0&&recTotal>0){const ch=Math.round((recTotal-prev)/prev*100);
+    $("trend").innerHTML=`<b class="${ch>0?"up":""}">${ch>0?"+":""}${ch}%</b> u odnosu na ${MONTHS[pd.getMonth()]}`;$("trend").hidden=false}
+  else $("trend").hidden=true;
+
+  // split card
+  const pct=dueAll>0?Math.round(back/dueAll*100):0;
+  $("pct").textContent=pct+"%";$("ringWrap").setAttribute("aria-label","Vraćeno "+pct+" posto");
+  $("ringArc").style.strokeDashoffset=314.16*(1-pct/100);
+  $("backAmt").textContent=fmt(back);$("owedAmt").textContent=fmt(owedAll);
+  $("lineBack").style.width=pct+"%";$("lineOwed").style.width=(dueAll?100-pct:0)+"%";
+
+  renderChart(list);
+  renderMonths();
+  renderYear();
+  renderRecurring();
+  renderPendingHome();
+  setPhoneUI();
+  planReminders();
+
+  buildPeople();
+  document.querySelectorAll("[data-av]").forEach(a=>a.textContent=initial(names[+a.dataset.av]));
+  units().forEach((u,ui)=>{
+    if(u.type==="group"){
+      const g=groups[u.gi],inp=$("gname"+u.gi);
+      if(document.activeElement!==inp){inp.value=g.name||"";inp.placeholder=u.members.map(m=>names[m]).join(" i ")}
+      $("gmem"+u.gi).textContent=u.members.map(m=>names[m]).join(" + ")+` · ${u.members.length}/4 dijela`;
+    }else{const i=u.members[0],inp=$("name"+i);if(document.activeElement!==inp)inp.value=names[i]}
+    const c=$("uchip"+ui),o=$("uowe"+ui),m=$("umini"+ui);
+    if(u.type==="me"){o.textContent=fmt(mine);m.style.width=mine?"100%":"0";c.className="chip";c.textContent="plaća račune";return}
+    const ow=u.members.reduce((s,k)=>s+owed[k],0),du=u.members.reduce((s,k)=>s+due[k],0);
+    // the card always shows the full share for the month; the chip says what is still open
+    o.textContent=fmt(du);
+    m.style.width=(du?Math.round((du-ow)/du*100):0)+"%";
+    if(!list.length||du<0.005){c.className="chip";c.textContent="nema računa"}
+    else if(ow<0.005){c.className="chip ok";c.textContent="✓ podmireno"}
+    else if(ow<du-0.005){c.className="chip due";c.textContent="još "+fmt(ow)}
+    else{c.className="chip due";c.textContent=u.type==="group"?"grupa duguje":"duguje"}
+  });
+  renderBills(list);
+}
+
+function niceMax(v){if(v<=0)return 100;const raw=v/4,p=Math.pow(10,Math.floor(Math.log10(raw)));const step=[1,2,2.5,3,4,5,6,8,10].map(f=>f*p).find(x=>x>=raw);return step*4}
+function renderChart(list){
+  const el=$("chartCard");
+  const sums={},payers={};list.forEach(b=>{const c=catFor(b.name);sums[c.label]=(sums[c.label]||0)+b.amount;
+    const w=whoOf(b);(payers[c.label]=payers[c.label]||new Set()).add(w.length===1?w[0]:"x")});
+  // a category paid by one person only is drawn in that person's colour
+  const soleOf=l=>{const ps=payers[l];if(!ps||ps.size!==1)return null;const v=[...ps][0];return v==="x"?null:v};
+  const cats=CATS.filter(c=>sums[c.label]).sort((a,b)=>sums[b.label]-sums[a.label]).slice(0,6);
+  if(!cats.length){el.innerHTML=`<div class="chart-empty">Kad dodaš račune, ovdje ćeš vidjeti koliko ide na struju, vodu, plin…</div>`;return}
+  const max=niceMax(Math.max(...cats.map(c=>sums[c.label])));
+  const ticks=[1,.75,.5,.25,0].map(f=>max*f);
+  el.innerHTML=`<div class="chart"><div class="yax">${ticks.map(t=>`<span>${fmt0(t)}</span>`).join("")}</div>
+    <div class="plot">${[0,25,50,75].map(p=>`<div class="grid" style="top:${p}%"></div>`).join("")}
+      <div class="bars">${cats.map(c=>{const o=soleOf(c.label),bg=o!=null?`;background:linear-gradient(180deg,color-mix(in srgb,${PCOL[o]} 65%,#fff),${PCOL[o]})`:"";
+        return `<div class="bar" style="height:${sums[c.label]/max*100}%${bg}" title="${c.label}: ${fmt(sums[c.label])}${o!=null?" · plaća "+esc(names[o]):""}"><span>${fmt0(sums[c.label])}</span></div>`}).join("")}</div></div>
+    <div class="xax">${cats.map(c=>{const o=soleOf(c.label);return `<div>${icon(c.k,18)}<span>${c.label}</span>${o!=null?`<span class="xwho" style="color:${PCOL[o]}">${esc(names[o])}</span>`:""}</div>`}).join("")}</div></div>`;
+}
+
+let armed=null;
+function renderBills(list){
+  const el=$("bills");
+  if(!list.length){el.innerHTML=`<div class="empty">Nema računa za ${MONTHS[cur.getMonth()]}.${RO?"":"<br>Dodaj prvi tipkom + dolje."}</div>`;return}
+  el.innerHTML="";
+  list.forEach(b=>{
+    const who=whoOf(b),sh=shares(b.amount,who),cat=catFor(b.name);
+    const others=who.filter(i=>i!==0);
+    const allPaid=others.every(i=>b.paid&&b.paid["p"+(i+1)]);
+    const per=fmt(sh[who.find(i=>i!==0)??who[0]]);
+    const whoTxt=who.length===4?`${per} / osoba`:`${per} · dijele ${who.length}`;
+    const row=document.createElement("div");row.className="bill";
+    row.innerHTML=`<div class="b-top"><div class="tile">${icon(cat.k)}</div>
+      <div class="b-main"><div class="b-name">${esc(b.name)}${b.rid?'<span class="tag">stalna</span>':""}</div><div class="b-meta">${b.createdAt?new Date(b.createdAt).toLocaleDateString("hr-HR",{day:"numeric",month:"short"}):""}${who.length<4?" · samo: "+esc(who.map(i=>names[i]).join(", ")):""}${others.length&&allPaid?" · sve vraćeno ✓":""}</div></div>
+      <div class="b-amt neg num">−${fmt(b.amount)}<small>${whoTxt}</small></div></div>`;
+    const tg=document.createElement("div");tg.className="toggles";
+    units().filter(u=>u.type!=="me").forEach(u0=>{
+      const u={...u0,members:u0.members.filter(m=>who.includes(m))};
+      if(!u.members.length)return;
+      const keys=u.members.map(m=>"p"+(m+1));
+      const on=keys.every(k=>b.paid&&b.paid[k]);
+      const amt=u.members.reduce((s,m)=>s+sh[m],0);
+      const nm=unitName(u);
+      const t=document.createElement("button");t.className="toggle";t.style.setProperty("--pc",PCOL[u.members[0]]);t.setAttribute("aria-pressed",on);
+      t.innerHTML=`<span class="dot">${on?"✓":u.type==="group"?u.members.length:esc(initial(nm))}</span><span>${esc(nm)}</span><span class="amt num">${fmt(amt)}</span>`;
+      t.title=RO?(on?"Vraćeno":"Još nije vraćeno"):on?"Vraćeno – klikni za poništavanje":"Označi da je vraćeno";
+      if(RO)t.setAttribute("aria-disabled","true");
+      t.onclick=async()=>{if(RO)return;const paid={...(b.paid||{})};keys.forEach(k=>paid[k]=!on);try{await patchBill(b.id,{paid})}catch(e){toast("Promjena nije spremljena")}};
+      tg.append(t);
+    });
+    const d=document.createElement("button");d.className="del"+(armed===b.id?" armed":"");d.textContent=armed===b.id?"Sigurno?":"Obriši";
+    d.onclick=async()=>{if(armed!==b.id){armed=b.id;renderBills(list);setTimeout(()=>{if(armed===b.id){armed=null;renderBills(currentList())}},3000);return}armed=null;try{await removeBill(b.id);toast("Račun obrisan")}catch(e){toast("Brisanje nije uspjelo")}};
+    tg.append(d);row.append(tg);el.append(row);
+  });
+}
+
+// sheet
+let selWho=[...ALL];
+function renderWho(){
+  $("whoPick").innerHTML=ALL.map(i=>`<button type="button" aria-pressed="${selWho.includes(i)}" data-i="${i}"><div class="avatar" style="background:${PCOL[i]}">${esc(initial(names[i]))}</div><span>${esc(i===0?names[0]+" (ti)":names[i])}</span></button>`).join("");
+  $("whoPick").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i;
+    if(selWho.includes(i)){if(selWho.length===1){$("status").textContent="Barem jedna osoba mora dijeliti račun.";return}selWho=selWho.filter(x=>x!==i)}
+    else selWho=[...selWho,i].sort();
+    $("status").textContent="";renderWho();updatePreview();
+  });
+}
+function openSheet(){selWho=[...ALL];renderWho();updatePreview();$("sheet").classList.add("open");$("scrim").classList.add("open");$("status").textContent="";setTimeout(()=>$("billName").focus(),250)}
+function closeSheet(){$("sheet").classList.remove("open");$("gSheet").classList.remove("open");$("lSheet").classList.remove("open");$("rSheet").classList.remove("open");$("pSheet").classList.remove("open");$("scrim").classList.remove("open")}
+function gUpdate(){
+  const sel=[...document.querySelectorAll("#pick input:checked")].map(x=>+x.value);
+  $("gPreview").textContent=sel.length>=2?`Grupa vraća ${sel.length} od 4 dijela svakog računa.`:"Odaberi barem dvije osobe.";
+  $("gSave").disabled=sel.length<2;$("gSave").style.opacity=sel.length<2?.5:1;
+}
+function openGroupSheet(){
+  const free=[1,2,3].filter(i=>!groups.some(g=>g.members.includes(i)));
+  $("pick").innerHTML=free.map(i=>`<label><input type="checkbox" value="${i}" id="pk${i}"><div class="avatar" style="background:${PCOL[i]}">${esc(initial(names[i]))}</div><span>${esc(names[i])}</span><span class="s">1/4 dijela</span></label>`).join("");
+  $("pick").querySelectorAll("input").forEach(x=>x.onchange=gUpdate);
+  $("gName").value="";$("gStatus").textContent="";gUpdate();
+  $("gSheet").classList.add("open");$("scrim").classList.add("open");
+}
+$("groupLink").onclick=openGroupSheet;
+$("gSave").onclick=async()=>{
+  const sel=[...document.querySelectorAll("#pick input:checked")].map(x=>+x.value).sort();
+  if(sel.length<2){$("gStatus").textContent="Odaberi barem dvije osobe.";return}
+  groups.push({name:$("gName").value.trim(),members:sel});
+  await savePeopleNow();closeSheet();render();toast("Grupa spojena: "+groupName(groups[groups.length-1]));
+};
+$("addLink").onclick=openSheet;$("scrim").onclick=()=>{pendingPage=null;pendingAdd=false;closeSheet()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
+function updatePreview(){
+  const a=parseAmt($("billAmt").value);
+  const n=selWho.length,who=selWho.map(i=>esc(names[i])).join(", ");
+  const sh=a?shares(a,selWho):null,first=sh?sh[selWho.find(i=>i!==0)??selWho[0]]:0;
+  $("preview").innerHTML=n===4
+    ?(a?`Svaki od 4 ukućana plaća <b>${fmt(first)}</b>`:"Iznos se dijeli na 4 osobe.")
+    :(a?`Dijele ${n===1?"samo":""} ${who} · <b>${fmt(first)}</b>${n>1?" po osobi":""}`:`Iznos se dijeli na: ${who}`)
+    +(!selWho.includes(0)?" · tebi se vraća cijeli iznos":"");
+  const v=$("billName").value.trim(),c=catFor(v);
+  document.querySelectorAll(".preset").forEach(p=>p.classList.toggle("sel",!!v&&p.dataset.label===c.label));
+}
+$("presets").innerHTML=CATS.map(c=>`<button type="button" class="preset" data-label="${c.label}">${icon(c.k)}<span>${c.label}</span></button>`).join("");
+$("presets").querySelectorAll(".preset").forEach(b=>b.onclick=()=>{$("billName").value=b.dataset.label==="RTV"?"RTV pristojba":b.dataset.label==="Smeće"?"Odvoz smeća":b.dataset.label;updatePreview();$("billAmt").focus()});
+$("billAmt").addEventListener("input",updatePreview);$("billName").addEventListener("input",updatePreview);
+$("addForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const name=$("billName").value.trim(),amount=parseAmt($("billAmt").value);
+  if(!name){$("status").textContent="Upiši naziv računa.";return}
+  if(amount===null){$("status").textContent="Iznos mora biti broj veći od nule, npr. 48,60.";return}
+  try{await addBill({name,amount,who:[...selWho],month:ym(cur),createdAt:Date.now(),paid:{p2:false,p3:false,p4:false}});
+    $("billName").value="";$("billAmt").value="";updatePreview();closeSheet();toast("Dodano: "+name+" · "+fmt(amount))}
+  catch(err){$("status").textContent=err&&err.code==="quota_exceeded"?"Spremište je puno. Obriši stare račune.":"Račun nije spremljen. Pokušaj ponovno."}
+});
+
+// nav
+$("prev").onclick=()=>{cur.setMonth(cur.getMonth()-1);render()};
+$("next").onclick=()=>{cur.setMonth(cur.getMonth()+1);render()};
+// pages: Pregled is open to everyone, the rest need the owner's sign-in
+const PAGES={pregled:"Pregled kućnih režija",godina:"Pregled po godini",racuni:"Računi",mjeseci:"Mjeseci"};
+const LOCKED=new Set(["racuni","mjeseci"]);
+let page="pregled", pendingPage=null, pendingAdd=false;
+function go(p){
+  if(LOCKED.has(p)&&RO){if(authApi){pendingPage=p;pendingAdd=false;openLogin()}else toast("Ova stranica je zaključana");return}
+  page=p;
+  document.querySelectorAll(".page").forEach(el=>el.hidden=el.dataset.page!==p);
+  document.querySelectorAll(".dock .nav").forEach(b=>b.classList.toggle("on",b.dataset.go===p));
+  $("balance").hidden=p!=="pregled";
+  $("pageSub").textContent=PAGES[p];
+  if(p==="pregled")setGreeting();else $("greet").textContent=p==="godina"?"Pregled":PAGES[p];
+  document.querySelector(".top .month").style.visibility=p==="godina"?"hidden":"visible";
+  window.scrollTo({top:0});
+}
+function setGreeting(){const h=new Date().getHours();$("greet").textContent=(h<10?"Dobro jutro":h<18?"Dobar dan":"Dobra večer")+" 👋"}
+document.querySelectorAll(".dock .nav").forEach(b=>b.onclick=()=>go(b.dataset.go));
+$("fab").onclick=()=>{if(RO){if(authApi){pendingAdd=true;pendingPage=null;openLogin()}else toast("Dodavanje je zaključano");return}openSheet()};
+function afterLogin(){const p=pendingPage,a=pendingAdd;pendingPage=null;pendingAdd=false;if(p)go(p);if(a)setTimeout(openSheet,320)}
+
+
+let yearSel=new Date().getFullYear();
+function renderYear(){
+  if(!$("yTotal"))return;
+  $("yLabel").textContent=yearSel;
+  const yb=bills.filter(b=>b.rid&&(b.month||"").startsWith(yearSel+"-"));
+  const per=Array(12).fill(0);yb.forEach(b=>{per[+b.month.slice(5,7)-1]+=b.amount});
+  const total=per.reduce((a,b)=>a+b,0);
+  const now=new Date();
+  const monthsSoFar=yearSel<now.getFullYear()?12:yearSel>now.getFullYear()?0:now.getMonth()+1;
+  const active=per.filter(v=>v>0).length;
+  const avgDiv=Math.max(active,1);
+  $("yTotal").textContent=fmt(total);
+  $("yAvg").textContent=active?fmt(total/avgDiv):"—";
+  const mi=per.indexOf(Math.max(...per));
+  $("yMax").textContent=total?MONTHS[mi]+" · "+fmt0(per[mi]):"—";
+  const prev=bills.filter(b=>b.rid&&(b.month||"").startsWith((yearSel-1)+"-")).reduce((s,b)=>s+b.amount,0);
+  $("yCmp").innerHTML=prev>0&&total>0?(()=>{const ch=Math.round((total-prev)/prev*100);return `U odnosu na ${yearSel-1}. (${fmt(prev)}): <b class="${ch>0?"up":"down"}">${ch>0?"+":""}${ch}%</b>`})():"";
+  $("yMeta").textContent=active?`${active} ${active===1?"mjesec":active<5?"mjeseca":"mjeseci"} s računima`:"";
+  // 12-month chart
+  const yc=$("yChart");
+  if(!total){yc.innerHTML=`<div class="chart-empty">Za ${yearSel}. još nema stalnih režija.</div>`;$("yCats").innerHTML=`<div class="chart-empty">Nema podataka.</div>`;$("yMeta2").textContent="";return}
+  const max=niceMax(Math.max(...per));
+  yc.innerHTML=`<div class="chart"><div class="yax">${[1,.75,.5,.25,0].map(f=>`<span>${fmt0(max*f)}</span>`).join("")}</div>
+    <div class="plot">${[0,25,50,75].map(p=>`<div class="grid" style="top:${p}%"></div>`).join("")}
+      <div class="bars y12">${per.map((v,i)=>`<div class="bar${v?"":" zero"}${v&&i===mi?" max":""}" style="height:${v?v/max*100:1.5}%" title="${MONTHS[i]}: ${fmt(v)}">${v&&i===mi?`<span>${fmt0(v)}</span>`:""}</div>`).join("")}</div></div>
+    <div class="xax y12">${MONTHS.map(m=>`<div><span>${m.slice(0,3)}</span></div>`).join("")}</div></div>`;
+  // categories
+  const sums={};yb.forEach(b=>{const c=catFor(b.name);sums[c.label]=(sums[c.label]||0)+b.amount});
+  const cats=[...CATS,OTHER].filter(c=>sums[c.label]).sort((a,b)=>sums[b.label]-sums[a.label]);
+  const top=sums[cats[0].label];
+  $("yMeta2").textContent=cats.length+" "+(cats.length===1?"vrsta":cats.length<5?"vrste":"vrsta");
+  $("yCats").innerHTML=cats.map(c=>`<div class="cat-row"><div class="tile">${icon(c.k)}</div>
+    <div><div class="cn">${c.label}<span>${Math.round(sums[c.label]/total*100)}%</span></div><div class="cb"><i style="width:${sums[c.label]/top*100}%"></i></div></div>
+    <div class="ca num">${fmt(sums[c.label])}</div></div>`).join("");
+}
+$("yprev").onclick=()=>{yearSel--;renderYear()};
+$("ynext").onclick=()=>{yearSel++;renderYear()};
+
+// ---- standing bills
+const recDraft={};
+function lastAmountFor(r,month){
+  const prev=bills.filter(b=>(b.rid===r.id||(!b.rid&&b.name===r.name))&&b.month<month).sort((a,b)=>a.month<b.month?1:-1)[0];
+  return prev?prev.amount:null;
+}
+function pendingFor(month){const list=listFor(month);return recList().filter(r=>!list.some(b=>b.rid===r.id))}
+function renderRecurring(){
+  const el=$("recCard");if(!el)return;
+  if(document.activeElement&&el.contains(document.activeElement)&&document.activeElement.tagName==="INPUT")return;
+  const m=ym(cur),list=listFor(m),items=recList();
+  if(!items.length){el.innerHTML=`<div class="chart-empty">Nema stalnih režija.${RO?"":" Dodaj ih preko „Uredi popis”."}</div>`;return}
+  el.innerHTML=items.map(r=>{
+    const b=list.find(x=>x.rid===r.id),cat=catFor(r.name);
+    const rw=whoForRec(r,m),whoTxt=rw.length<4?" · samo "+rw.map(i=>esc(names[i])).join(", "):"";
+    if(b)return `<div class="rec-row done"><div class="tile">${icon(cat.k)}</div><div><div class="rn">${esc(r.name)}</div><div class="rs">✓ upisano</div></div><div class="rec-amt num">${fmt(b.amount)}</div></div>`;
+    const last=lastAmountFor(r,m);
+    const val=recDraft[r.id]!==undefined?recDraft[r.id]:(r.amount!=null?String(r.amount).replace(".",","):"");
+    const sub=r.amount!=null?`fiksno ${fmt(r.amount)}`:last!=null?`prošli put ${fmt(last)}`:"upiši iznos";
+    return `<div class="rec-row"><div class="tile">${icon(cat.k)}</div><div><div class="rn">${esc(r.name)}</div><div class="rs">${sub}${whoTxt}</div></div>
+      <div class="rec-in"><input data-rid="${r.id}" id="rin-${r.id}" inputmode="decimal" placeholder="${last!=null?String(last).replace(".",","):"0,00"}" value="${esc(val)}" aria-label="Iznos za ${esc(r.name)}"><button data-radd="${r.id}">Dodaj</button></div></div>`;
+  }).join("")+`<div id="recFoot"></div>`;
+  updateRecFoot();
+  el.querySelectorAll("[data-radd]").forEach(b=>b.onclick=()=>addRecurring([b.dataset.radd]));
+  el.querySelectorAll("input[data-rid]").forEach(x=>{x.oninput=()=>{recDraft[x.dataset.rid]=x.value;updateRecFoot()};x.onkeydown=e=>{if(e.key==="Enter")addRecurring([x.dataset.rid])}});
+}
+function updateRecFoot(){
+  const f=$("recFoot");if(!f)return;
+  const m=ym(cur),list=listFor(m),items=recList();
+  const open=items.filter(r=>!list.some(b=>b.rid===r.id));
+  const ready=open.filter(r=>{const x=$("rin-"+r.id);return x&&parseAmt(x.value)!==null}).map(r=>r.id);
+  f.className="rec-foot";
+  f.innerHTML=open.length?`<span>Još ${open.length} od ${items.length} za ${MONTHS[cur.getMonth()]}</span>${ready.length>1?`<button class="rec-all" id="recAll">Dodaj sve s iznosom (${ready.length})</button>`:""}`
+    :`<span style="color:var(--ok)">Sve stalne režije za ${MONTHS[cur.getMonth()]} su upisane ✓</span>`;
+  if($("recAll"))$("recAll").onclick=()=>addRecurring(ready);
+}
+async function addRecurring(ids){
+  if(RO)return;
+  const vals={};ids.forEach(id=>{const x=$("rin-"+id);if(x)vals[id]=x.value});
+  if(document.activeElement)document.activeElement.blur();
+  const m=ym(cur);let n=0;
+  for(const id of ids){
+    const r=recList().find(x=>x.id===id);if(!r||vals[id]===undefined)continue;
+    const amount=parseAmt(vals[id]);
+    if(amount===null){if(ids.length===1){const inp=$("rin-"+id);if(inp)inp.focus();toast("Upiši iznos za "+r.name)}continue}
+    if(listFor(m).some(b=>b.rid===id))continue;
+    try{await addBill({name:r.name,amount,who:[...whoForRec(r,m)],rid:id,month:m,createdAt:Date.now(),paid:{p2:false,p3:false,p4:false}});delete recDraft[id];n++}
+    catch(e){toast("Nije spremljeno: "+r.name)}
+  }
+  if(n)toast(n===1?"Dodano":"Dodano: "+n+" računa");
+}
+function renderPendingHome(){
+  const box=$("pendingHome");if(!box)return;
+  const pend=pendingFor(ym(cur));
+  box.hidden=!pend.length;
+  if(pend.length)$("pendingText").textContent=pend.map(r=>r.name).join(", ")+" · "+MONTHS[cur.getMonth()];
+}
+// manage list
+let rWork=[];
+function openRecSheet(){
+  rWork=recList().map(r=>({...r,who:[...(r.who||[0,1,2,3])],orig:[...(r.who||[0,1,2,3])],prev:[...(r.prev||[])]}));
+  $("rFrom").textContent=MONTHS[cur.getMonth()]+" "+cur.getFullYear()+".";
+  drawRecSheet();$("rStatus").textContent="";
+  $("rSheet").classList.add("open");$("scrim").classList.add("open");
+}
+function drawRecSheet(){
+  $("rList").innerHTML=rWork.map((r,i)=>`<div class="r-item"><div class="r-top">
+    <input data-k="name" data-i="${i}" value="${esc(r.name)}" placeholder="Naziv" maxlength="40" aria-label="Naziv">
+    <input data-k="amount" data-i="${i}" inputmode="decimal" value="${esc(r.amountTxt!==undefined?r.amountTxt:r.amount!=null?String(r.amount).replace(".",","):"")}" placeholder="promjenjiv" aria-label="Fiksni iznos">
+    <button class="r-del" data-del="${i}" aria-label="Ukloni">✕</button></div>
+    <div class="r-who">${[0,1,2,3].map(k=>`<button type="button" data-w="${i}:${k}" aria-pressed="${r.who.includes(k)}"><div class="avatar" style="background:${PCOL[k]}">${esc(initial(names[k]))}</div>${esc(names[k])}</button>`).join("")}</div></div>`).join("")||'<div class="chart-empty">Popis je prazan.</div>';
+  $("rList").querySelectorAll("input").forEach(x=>x.oninput=()=>{const r=rWork[+x.dataset.i];if(x.dataset.k==="name")r.name=x.value;else r.amountTxt=x.value});
+  $("rList").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{rWork.splice(+b.dataset.del,1);drawRecSheet()});
+  $("rList").querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>{const [i,k]=b.dataset.w.split(":").map(Number),r=rWork[i];
+    if(r.who.includes(k)){if(r.who.length===1){$("rStatus").textContent="Barem jedna osoba mora dijeliti račun.";return}r.who=r.who.filter(x=>x!==k)}else r.who=[...r.who,k].sort();$("rStatus").textContent="";drawRecSheet()});
+}
+$("rAdd").onclick=()=>{rWork.push({id:"r"+Date.now().toString(36),name:"",amount:null,who:[0,1,2,3]});drawRecSheet();const ins=$("rList").querySelectorAll('input[data-k="name"]');ins[ins.length-1].focus()};
+$("rSave").onclick=async()=>{
+  const items=[];
+  for(const r of rWork){
+    const name=(r.name||"").trim();if(!name)continue;
+    let amount=r.amount;
+    if(r.amountTxt!==undefined){const t=r.amountTxt.trim();if(!t)amount=null;else{amount=parseAmt(t);if(amount===null){$("rStatus").textContent="Iznos za „"+name+"” nije ispravan.";return}}}
+    let prev=r.prev||[];
+    if(r.orig&&r.orig.join()!==r.who.join()){
+      // the change applies from the month being viewed; earlier months keep the old people
+      const until=prevMonth(ym(cur));
+      prev=prev.filter(x=>x.until<until).concat([{until,who:r.orig}]);
+    }
+    const it={id:r.id,name,amount,who:r.who};if(prev.length)it.prev=prev;
+    items.push(it);
+  }
+  recurring=items;
+  try{if(db)await db.doc("settings/recurring").set({items});else lsSave()}catch(e){$("rStatus").textContent="Popis nije spremljen. Pokušaj ponovno.";return}
+  closeSheet();render();toast("Popis stalnih režija spremljen");
+};
+$("recEdit").onclick=()=>{if(!RO)openRecSheet()};
+
+function renderMonths(){
+  const el=$("months");if(!el)return;
+  const byM={};bills.forEach(b=>{(byM[b.month]=byM[b.month]||[]).push(b)});
+  const now=ym(new Date());if(!byM[now])byM[now]=[];
+  const keys=Object.keys(byM).sort().reverse();
+  el.innerHTML="";
+  keys.forEach(k=>{
+    const list=byM[k],[y,m]=k.split("-").map(Number);
+    const total=list.reduce((s,b)=>s+b.amount,0);
+    let due=0,owed=0;list.forEach(b=>{const w=whoOf(b),sh=shares(b.amount,w);w.filter(i=>i!==0).forEach(i=>{due+=sh[i];if(!(b.paid&&b.paid["p"+(i+1)]))owed+=sh[i]})});
+    const row=document.createElement("button");row.className="month-row"+(k===ym(cur)?" cur":"");
+    const state=!list.length?"":owed<0.005?`<small style="color:var(--ok)">sve vraćeno</small>`:`<small style="color:var(--due)">duguju ${fmt(owed)}</small>`;
+    row.innerHTML=`<div class="mi">${MONTHS[m-1].slice(0,3)}</div><div class="mm"><div class="mn">${MONTHS[m-1]} ${y}</div><div class="ms">${list.length} ${list.length===1?"račun":list.length>=2&&list.length<=4?"računa":"računa"}${k===now?" · ovaj mjesec":""}</div></div><div class="mt num">${fmt(total)}${state}</div>`;
+    row.onclick=()=>{cur=new Date(y,m-1,1);render();go("racuni")};
+    el.append(row);
+  });
+}
+
+// boot
+if(SNAP){bills=SNAP.bills||[];names=SNAP.names||names;groups=SNAP.groups||[];
+  if(SNAP.month){const [y,m]=SNAP.month.split("-").map(Number);cur=new Date(y,m-1,1)}}
+// ---- debt reminders (Android app only)
+const NOTE=window.RezijeNotify&&window.RezijeNotify.available?window.RezijeNotify:null;
+const PHONE_KEY="rezije-phone";
+let phoneOf=null;try{const v=localStorage.getItem(PHONE_KEY);phoneOf=v===null?null:+v}catch(e){}
+function setPhoneUI(){
+  if(!NOTE)return;
+  $("phoneBtn").hidden=false;
+  $("phoneTxt").textContent=phoneOf>=1?"Obavijesti: "+names[phoneOf]:phoneOf===0?"Mobitel: "+names[0]:"Postavi obavijesti";
+}
+function openPhoneSheet(){
+  $("phonePick").innerHTML=[0,1,2,3].map(i=>`<button type="button" data-ph="${i}" aria-pressed="${phoneOf===i}"><div class="avatar" style="background:${PCOL[i]}">${esc(initial(names[i]))}</div><span>${esc(names[i])}</span></button>`).join("");
+  $("phonePick").querySelectorAll("[data-ph]").forEach(b=>b.onclick=()=>choosePhone(+b.dataset.ph));
+  $("pStatus").textContent="";
+  $("pSheet").classList.add("open");$("scrim").classList.add("open");
+}
+async function choosePhone(i){
+  phoneOf=i;try{localStorage.setItem(PHONE_KEY,String(i))}catch(e){}
+  setPhoneUI();
+  if(i>=1){
+    const ok=await NOTE.ensurePermission();
+    closeSheet();
+    toast(ok?"Obavijesti uključene":"Obavijesti nisu dopuštene. Uključi ih u postavkama mobitela.");
+  }else{closeSheet();toast(i===0?"Tebi ne stižu podsjetnici, ti primaš novac":"Obavijesti isključene")}
+  lastPlan="";planReminders();
+}
+$("phoneBtn").onclick=openPhoneSheet;
+$("phoneNone").onclick=()=>choosePhone(-1);
+function owedForPhone(idx){
+  const g=groups.find(x=>x.members.includes(idx)),members=g?g.members:[idx];
+  const upto=ym(new Date());let owed=0;
+  bills.forEach(b=>{if(!b.month||b.month>upto)return;const sh=shares(b.amount,whoOf(b));
+    members.forEach(k=>{if(sh[k]&&!(b.paid&&b.paid["p"+(k+1)]))owed+=sh[k]})});
+  return {owed:Math.round(owed*100)/100,group:g};
+}
+// first reminder: the 10th at 12:00, or the next 12:00 if we are already past the 10th
+function firstReminder(now=new Date()){
+  const t=new Date(now.getFullYear(),now.getMonth(),Math.max(10,now.getDate()),12,0,0,0);
+  if(t<=now)t.setDate(t.getDate()+1);
+  return t;
+}
+let lastPlan="",planTimer=null;
+function planReminders(){
+  if(!NOTE||!billsLoaded)return;
+  clearTimeout(planTimer);
+  planTimer=setTimeout(async()=>{
+    const idx=phoneOf;
+    if(!(idx>=1)){if(lastPlan!=="none"){lastPlan="none";NOTE.clear()}return}
+    const {owed,group}=owedForPhone(idx);
+    const first=firstReminder();
+    const sig=idx+"|"+owed.toFixed(2)+"|"+first.toDateString();
+    if(sig===lastPlan)return;lastPlan=sig;
+    if(owed<0.005){NOTE.clear();return}
+    const who=group?groupName(group)+", dugujete":"Duguješ",pay=group?"Kad platite":"Kad platiš";
+    const list=[];
+    for(let d=0;d<30;d++){const at=new Date(first);at.setDate(first.getDate()+d);
+      list.push({at,title:"Kućne režije",body:`${who} ${fmt(owed)} za režije. ${pay}, ${names[0]} će to označiti i podsjetnici prestaju.`})}
+    try{await NOTE.plan(list)}catch(e){lastPlan=""}
+  },1200);
+}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){lastPlan="";planReminders()}});
+
+// One page, two homes: the Android app (Firebase + owner sign-in) or a Claude artifact
+const IS_APP=!!(window.RezijeBackend&&window.FIREBASE_CONFIG);
+let authApi=null, signedIn=null;
+function subscribe(){
+  db.doc("settings/people").onSnapshot(s=>{if(s.exists){const d=s.data();if(Array.isArray(d.names))names=[...d.names];
+    groups=Array.isArray(d.groups)?d.groups.map(g=>({name:g.name||"",members:[...(g.members||[])].filter(m=>m>=1&&m<=3)})).filter(g=>g.members.length>=2):[];render()}},()=>{});
+  db.doc("settings/recurring").onSnapshot(s=>{recurring=s.exists&&Array.isArray(s.data().items)?s.data().items:null;render()},()=>{});
+  db.collection("bills").onSnapshot(s=>{bills=s.docs.map(d=>({id:d.id,...d.data()}));billsLoaded=true;render();if(NOTE&&phoneOf===null&&!askedPhone){askedPhone=true;setTimeout(openPhoneSheet,600)}},
+    ()=>{$("bills").innerHTML=`<div class="empty">Računi se trenutno ne mogu učitati. Provjeri internet.</div>`});
+}
+let billsLoaded=false,askedPhone=false;
+function setAuthUI(){
+  const owner=!!(authApi&&authApi.isOwner(signedIn));
+  $("loginBtn").hidden=!authApi||owner;
+  $("logoutBtn").hidden=!owner;
+  if(signedIn&&authApi&&!owner)$("roText").textContent="Prijavljen račun nema pravo uređivanja";
+  else if(RO)$("roText").textContent="Ostale stranice su zaključane";
+  if(RO&&LOCKED.has(page))go("pregled");
+}
+buildPeople();render();go("pregled");
+(async()=>{
+  if(SNAP)return;
+  if(IS_APP){
+    const cfg=window.FIREBASE_CONFIG;
+    if(String(cfg.apiKey).includes("ZAMIJENI")){setRO(true);$("roText").textContent="Firebase nije podešen: upiši podatke u config.js";return}
+    let be;
+    try{be=window.RezijeBackend.start(cfg,window.OWNER_EMAIL)}catch(e){setRO(true);$("roText").textContent="Spajanje na Firebase nije uspjelo";return}
+    db=be.db;authApi=be.auth;
+    authApi.onChange(u=>{signedIn=u;setRO(!authApi.isOwner(u));setAuthUI()});
+    setAuthUI();subscribe();return;
+  }
+  const cl=window.claude;
+  const [dbx,user]=await Promise.all(["db","user"].map(n=>cl?cl.use(n).catch(()=>null):Promise.resolve(null)));
+  db=dbx;
+  let own=!!db;
+  if(user){try{own=await user.isOwner()}catch(e){own=false}}
+  setRO(!own);setAuthUI();
+  if(!db){lsLoad();render();return}
+  subscribe();
+})();
+
+// login sheet
+function openLogin(){$("lSheet").classList.add("open");$("scrim").classList.add("open");$("lStatus").textContent="";setTimeout(()=>$("lEmail").focus(),250)}
+$("loginBtn").onclick=openLogin;
+$("logoutBtn").onclick=async()=>{try{await authApi.signOut();toast("Odjavljen si")}catch(e){toast("Odjava nije uspjela")}};
+$("lForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const em=$("lEmail").value.trim(),pw=$("lPass").value;
+  if(!em||!pw){$("lStatus").textContent="Upiši email i lozinku.";return}
+  $("lStatus").textContent="";$("lSubmit").disabled=true;
+  try{const r=await authApi.signIn(em,pw);
+    if(authApi.isOwner(r.user)){closeSheet();$("lPass").value="";toast("Otključano");afterLogin()}
+    else{$("lStatus").textContent="Ovaj račun nema pravo uređivanja.";await authApi.signOut()}}
+  catch(err){const c=err&&err.code||"";
+    $("lStatus").textContent=c.includes("network")?"Nema interneta. Pokušaj ponovno.":c.includes("too-many")?"Previše pokušaja. Pričekaj par minuta.":"Pogrešan email ili lozinka."}
+  finally{$("lSubmit").disabled=false}
+});
+</script>
+

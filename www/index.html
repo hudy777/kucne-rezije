@@ -99,7 +99,7 @@ body.ro .person input{pointer-events:none}
 #ringArc{transition:stroke-dashoffset .8s ease}
 
 /* chart */
-.chart{display:grid;grid-template-columns:auto 1fr;gap:8px}
+.chart{display:grid;grid-template-columns:auto 1fr;gap:8px;padding-top:14px}
 .yax{display:flex;flex-direction:column;justify-content:space-between;font-size:.7rem;color:var(--muted);font-weight:600;text-align:right;height:150px;padding-bottom:0}
 .plot{position:relative;height:150px;border-bottom:1px solid var(--line)}
 .plot .grid{position:absolute;left:0;right:0;border-top:1px dashed var(--line)}
@@ -109,6 +109,7 @@ body.ro .person input{pointer-events:none}
 .xax{grid-column:2;display:flex;justify-content:space-around;gap:6px;padding:0 4px}
 .xax div{flex:1;max-width:58px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.68rem;color:var(--muted);font-weight:600;text-align:center;min-width:0}
 .xax .ic{width:18px;height:18px;color:var(--ink)}
+.xax .xwho{font-weight:800;font-size:.64rem;margin-top:-2px}
 .xax div span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
 .chart-empty{text-align:center;color:var(--muted);padding:26px 8px;font-size:.9rem}
 
@@ -187,6 +188,64 @@ body.ro .person input{pointer-events:none}
 .lockb{position:absolute;right:-7px;top:-4px;width:15px;height:15px;border-radius:50%;background:var(--g1);border:1.5px solid var(--on-g-muted);display:none;place-items:center;color:var(--on-g)}
 body.ro .lockb{display:grid}
 .hint{font-size:.8rem;color:var(--muted);margin:10px 4px 0}
+.pending-card{display:flex;gap:12px;align-items:center;background:var(--duebg)}
+.pending-card .pc-ic{flex:none;width:40px;height:40px;border-radius:12px;background:var(--card);color:var(--due);display:grid;place-items:center}
+.pc-t{font-weight:800;color:var(--due);font-size:.9rem}
+.pc-s{font-size:.85rem;color:var(--ink);margin-top:1px}
+.rec-row{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.rec-row:first-child{border-top:0;padding-top:2px}
+.rec-row .tile{width:40px;height:40px;border-radius:12px}
+.rec-row .rn{font-weight:700;font-size:.92rem;overflow-wrap:anywhere}
+.rec-row .rs{font-size:.75rem;color:var(--muted)}
+.rec-row.done .tile{background:var(--okbg);color:var(--ok)}
+.rec-row.done .rs{color:var(--ok);font-weight:700}
+.rec-in{display:flex;gap:6px;align-items:center}
+.rec-in input{width:88px;font:700 .95rem var(--font);padding:9px 10px;border:1.5px solid var(--line);border-radius:12px;background:var(--card2);color:var(--ink);text-align:right}
+.rec-in input:focus{outline:none;border-color:var(--g3);background:var(--card)}
+.rec-in button,.rec-all{font:700 .8rem var(--font);padding:9px 12px;border-radius:12px;border:0;background:var(--g3);color:#fff;cursor:pointer}
+.rec-amt{font-weight:800;white-space:nowrap}
+.rec-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-top:12px;margin-top:4px;border-top:1px solid var(--line)}
+.rec-foot span{font-size:.8rem;color:var(--muted);font-weight:600}
+.rec-all{padding:10px 16px}
+body.ro .rec-in,body.ro .rec-foot,body.ro #recEdit{display:none!important}
+.tag{display:inline-block;font-size:.64rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--g3);background:var(--gl);padding:1px 6px;border-radius:5px;margin-left:6px;vertical-align:2px}
+.r-item{border:1.5px solid var(--line);border-radius:14px;padding:10px;margin-bottom:10px;display:flex;flex-direction:column;gap:8px}
+.r-top{display:grid;grid-template-columns:1fr 100px 32px;gap:8px;align-items:center}
+.r-top input{font:600 .92rem var(--font);padding:10px;border:1.5px solid var(--line);border-radius:10px;background:var(--card2);color:var(--ink);width:100%;min-width:0}
+.r-top input:focus{outline:none;border-color:var(--g3)}
+.r-del{width:32px;height:32px;border-radius:9px;border:0;background:var(--redbg);color:var(--red);cursor:pointer;font-weight:800}
+.r-who{display:flex;gap:6px;flex-wrap:wrap}
+.r-who button{display:inline-flex;align-items:center;gap:5px;font:700 .74rem var(--font);padding:3px 9px 3px 3px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer}
+.r-who button .avatar{width:20px;height:20px;border-radius:50%;font-size:.62rem;opacity:.35;filter:grayscale(1)}
+.r-who button[aria-pressed="true"]{border-color:var(--g3);background:var(--gl);color:var(--ink)}
+.r-who button[aria-pressed="true"] .avatar{opacity:1;filter:none}
+body.ro #namesHint{display:none}
+.yswitch{display:flex;align-items:center;gap:2px;background:var(--card);border-radius:999px;padding:3px;box-shadow:var(--shadow)}
+.yswitch button{width:28px;height:28px;border-radius:50%;border:0;background:transparent;color:var(--ink);font-size:1.05rem;cursor:pointer;line-height:1}
+.yswitch button:hover{background:var(--card2)}
+.yswitch span{font-weight:800;min-width:46px;text-align:center;font-size:.9rem}
+.ystats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:420px){.ystats{grid-template-columns:1fr 1fr}.ystats>div:first-child{grid-column:1/-1}}
+.ystats .k{font-size:.78rem;color:var(--muted);font-weight:600}
+.ystats .v{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;margin-top:2px;text-transform:capitalize}
+.ystats>div:first-child .v{font-size:1.6rem;color:var(--g3)}
+.ycmp{grid-column:1/-1;font-size:.82rem;color:var(--muted);font-weight:600;border-top:1px solid var(--line);padding-top:10px}
+.ycmp:empty{display:none}
+.ycmp b.up{color:var(--due)} .ycmp b.down{color:var(--ok)}
+.bars.y12{gap:3px;padding:0 2px}
+.bars.y12 .bar{max-width:24px;border-radius:6px 6px 2px 2px}
+.bars.y12 .bar.zero{background:var(--line)}
+.bars.y12 .bar.max{background:linear-gradient(180deg,#f2c94c,#d79a1c)}
+.xax.y12{gap:3px;padding:0 2px}
+.xax.y12 div{font-size:.62rem;text-transform:capitalize}
+.cat-row{display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.cat-row:first-child{border-top:0;padding-top:2px}
+.cat-row .tile{width:40px;height:40px;border-radius:12px}
+.cat-row .cn{font-weight:700;font-size:.92rem;display:flex;justify-content:space-between;gap:8px}
+.cat-row .cn span{color:var(--muted);font-weight:600;font-size:.78rem}
+.cat-row .cb{height:6px;border-radius:9px;background:var(--card2);margin-top:6px;overflow:hidden}
+.cat-row .cb i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--g4),var(--g3))}
+.cat-row .ca{font-weight:800;white-space:nowrap}
 .month-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-bottom:0;font-family:inherit;color:var(--ink);cursor:pointer;text-align:left}
 .month-row:first-child{border-top:0;padding-top:2px}
 .month-row .mi{flex:none;width:44px;height:44px;border-radius:14px;background:var(--gl);color:var(--g3);display:grid;place-items:center;font-weight:800;font-size:.8rem;text-transform:uppercase}
@@ -235,6 +294,8 @@ body.ro .lockb{display:grid}
 </head>
 <body>
 
+
+
 <div class="app">
   <header class="top pad">
     <div class="top-row">
@@ -246,7 +307,7 @@ body.ro .lockb{display:grid}
       </div>
     </div>
     <div class="balance" id="balance">
-      <div class="lbl">Ukupno režija ovaj mjesec</div>
+      <div class="lbl">Stalne režije ovaj mjesec</div>
       <div class="big num" id="total">0,00 €</div>
       <div class="trend" id="trend" hidden></div>
       <svg class="art" viewBox="0 0 128 128" aria-hidden="true">
@@ -263,12 +324,17 @@ body.ro .lockb{display:grid}
     <div class="top-actions">
       <button class="ghost" id="loginBtn" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" style="vertical-align:-2px"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Prijava</button>
       <button class="ghost" id="logoutBtn" hidden>Odjava</button>
+      <button class="ghost" id="phoneBtn" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg> <span id="phoneTxt">Obavijesti</span></button>
       <div class="ro-banner" id="roBanner" hidden><span id="roText"></span></div>
     </div>
   </header>
 
   <main class="pad">
     <div class="page" data-page="pregled">
+      <section class="section" id="pendingHome" hidden>
+        <div class="card pending-card"><div class="pc-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <div><div class="pc-t">Još čeka upis</div><div class="pc-s" id="pendingText"></div></div></div>
+      </section>
       <section class="section">
         <div class="sec-head"><h2>Povrat od ukućana</h2><span class="meta" id="mLbl2">Ovaj mjesec</span></div>
         <div class="card split">
@@ -293,23 +359,45 @@ body.ro .lockb{display:grid}
       </div>
     </section>
       <section class="section">
+        <div class="sec-head"><h2>Ukućani</h2><button class="linkbtn" id="groupLink">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-2px"><circle cx="8" cy="12" r="4"/><circle cx="16" cy="12" r="4"/></svg> Spoji u grupu</button></div>
+        <div class="people" id="people"></div>
+        <p class="hint" id="namesHint">Klikni na ime za promjenu.</p>
+      </section>
+      <section class="section">
         <div class="sec-head"><h2>Po kategoriji</h2><span class="meta" id="mLbl3">Ovaj mjesec</span></div>
         <div class="card" id="chartCard"></div>
       </section>
     </div>
 
-    <div class="page" data-page="ukucani" hidden>
+    <div class="page" data-page="godina" hidden>
       <section class="section">
-        <div class="sec-head"><h2>Tko koliko duguje</h2><button class="linkbtn" id="groupLink">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-2px"><circle cx="8" cy="12" r="4"/><circle cx="16" cy="12" r="4"/></svg> Spoji u grupu</button></div>
-        <div class="people" id="people"></div>
-        <p class="hint">Klikni na ime za promjenu.</p>
+        <div class="sec-head"><h2>Stalne režije u godini</h2>
+          <div class="yswitch"><button id="yprev" aria-label="Prethodna godina">‹</button><span id="yLabel" class="num">2026</span><button id="ynext" aria-label="Sljedeća godina">›</button></div></div>
+        <div class="card ystats">
+          <div><div class="k">Ukupno stalne režije</div><div class="v num" id="yTotal">0,00 €</div></div>
+          <div><div class="k">Prosjek po mjesecu</div><div class="v num" id="yAvg">0,00 €</div></div>
+          <div><div class="k">Najskuplji mjesec</div><div class="v" id="yMax">—</div></div>
+          <div class="ycmp" id="yCmp"></div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="sec-head"><h2>Po mjesecima</h2><span class="meta" id="yMeta"></span></div>
+        <div class="card" id="yChart"></div>
+      </section>
+      <section class="section">
+        <div class="sec-head"><h2>Po kategoriji</h2><span class="meta" id="yMeta2"></span></div>
+        <div class="card" id="yCats"></div>
       </section>
     </div>
 
     <div class="page" data-page="racuni" hidden>
       <section class="section">
-        <div class="sec-head"><h2>Računi u mjesecu</h2><button class="linkbtn" id="addLink">+ Dodaj</button></div>
+        <div class="sec-head"><h2>Stalne režije</h2><button class="linkbtn" id="recEdit">Uredi popis</button></div>
+        <div class="card" id="recCard"></div>
+      </section>
+      <section class="section">
+        <div class="sec-head"><h2>Računi u mjesecu</h2><button class="linkbtn" id="addLink">+ Ostalo</button></div>
         <div class="card"><div id="bills"><div class="empty">Učitavanje…</div></div></div>
         <p class="hint">Klikni na osobu kad ti vrati svoj dio.</p>
       </section>
@@ -325,8 +413,8 @@ body.ro .lockb{display:grid}
 </div>
 
 <div class="dock"><nav aria-label="Navigacija">
-  <button class="nav on" data-go="pregled"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Pregled</button>
-  <button class="nav" data-go="ukucani"><span class="nic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2a5 5 0 0 1 5.5 5.8"/></svg><span class="lockb" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span>Ukućani</button>
+  <button class="nav on" data-go="pregled"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Početna</button>
+  <button class="nav" data-go="godina"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Pregled</button>
   <button class="fab" id="fab" aria-label="Dodaj račun"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
   <button class="nav" data-go="racuni"><span class="nic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg><span class="lockb" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span>Računi</button>
   <button class="nav" data-go="mjeseci"><span class="nic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span class="lockb" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span>Mjeseci</button>
@@ -364,13 +452,35 @@ body.ro .lockb{display:grid}
   <div class="sheet-in">
     <div class="grab"></div>
     <h3 id="lSheetH">Otključaj</h3>
-    <p class="preview" style="margin-top:-6px">Ukućani, Računi, Mjeseci i dodavanje računa zaključani su. Pregled je otvoren svima.</p>
+    <p class="preview" style="margin-top:-6px">Računi, Mjeseci i dodavanje računa zaključani su. Početna i Pregled otvoreni su svima.</p>
     <form id="lForm" autocomplete="on">
       <div class="field"><label for="lEmail">Email</label><input id="lEmail" type="email" autocomplete="username" inputmode="email"></div>
       <div class="field"><label for="lPass">Lozinka</label><input id="lPass" type="password" autocomplete="current-password"></div>
       <button class="primary" type="submit" id="lSubmit">Otključaj</button>
       <div class="status" id="lStatus"></div>
     </form>
+  </div>
+</div>
+<div class="sheet" id="rSheet" role="dialog" aria-modal="true" aria-labelledby="rSheetH">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 id="rSheetH">Stalne režije</h3>
+    <p class="preview" style="margin-top:-6px">Pojavljuju se svaki mjesec. Ako je iznos uvijek isti, upiši ga i dodaje se jednim klikom. Ako se mijenja, ostavi prazno.</p>
+    <p class="preview" style="margin-top:-4px">Promjena osoba vrijedi od <b id="rFrom"></b> nadalje. Raniji mjeseci ostaju kakvi su bili.</p>
+    <div id="rList"></div>
+    <button class="linkbtn" id="rAdd" style="margin:4px 0 16px">+ Nova stalna režija</button>
+    <button class="primary" type="button" id="rSave">Spremi popis</button>
+    <div class="status" id="rStatus"></div>
+  </div>
+</div>
+<div class="sheet" id="pSheet" role="dialog" aria-modal="true" aria-labelledby="pSheetH">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 id="pSheetH">Čiji je ovo mobitel?</h3>
+    <p class="preview" style="margin-top:-6px">Od 10. u mjesecu, svaki dan u 12:00, stiže podsjetnik koliko duguješ za režije. Prestaje kad se označi da si platio.</p>
+    <div class="who" id="phonePick"></div>
+    <button class="linkbtn" id="phoneNone" style="margin-top:14px">Ne želim obavijesti</button>
+    <div class="status" id="pStatus"></div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -419,12 +529,19 @@ const initial=n=>((n||"").trim().charAt(0)||"?").toUpperCase();
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let cur=new Date(); cur.setDate(1);
 let bills=[]; let names=[...DEFAULT_NAMES]; let groups=[]; let db=null;
+// Standing monthly bills; defaults show until the owner saves their own list
+const DEFAULT_REC=[["struja","Struja"],["voda","Voda"],["smece","Odvoz smeća"],["internet","Internet"],["rtv","RTV pristojba"]].map(([id,name])=>({id,name,amount:null,who:[0,1,2,3]}));
+let recurring=null;
+const recList=()=>recurring||DEFAULT_REC;
+// Who shares a standing bill in a given month: earlier periods are kept in r.prev [{until:"YYYY-MM", who}]
+function whoForRec(r,m){const p=(r.prev||[]).filter(x=>m<=x.until).sort((a,b)=>a.until<b.until?-1:1)[0];return p?p.who:(r.who&&r.who.length?r.who:[0,1,2,3])}
+function prevMonth(m){const [y,mm]=m.split("-").map(Number);const d=new Date(y,mm-2,1);return ym(d)}
 // A "unit" is whoever settles up together: you, a group, or a single housemate
 function units(){
   const inG=new Set(groups.flatMap(g=>g.members));
   const u=[{type:"me",members:[0]}];
-  groups.forEach((g,gi)=>u.push({type:"group",gi,members:g.members}));
   [1,2,3].forEach(i=>{if(!inG.has(i))u.push({type:"person",members:[i]})});
+  groups.forEach((g,gi)=>u.push({type:"group",gi,members:g.members}));
   return u;
 }
 const groupName=g=>(g.name&&g.name.trim())||g.members.map(m=>names[m]).join(" i ");
@@ -442,8 +559,8 @@ function parseAmt(s){s=String(s).trim().replace(/\s/g,"").replace("€","");if(s
 
 // storage
 const LS="rezije-local-v1";
-function lsLoad(){try{const o=JSON.parse(localStorage.getItem(LS)||"{}");bills=o.bills||[];names=o.names||names;groups=o.groups||[]}catch(e){}}
-function lsSave(){try{localStorage.setItem(LS,JSON.stringify({bills,names,groups}))}catch(e){}}
+function lsLoad(){try{const o=JSON.parse(localStorage.getItem(LS)||"{}");bills=o.bills||[];names=o.names||names;groups=o.groups||[];recurring=o.recurring||null}catch(e){}}
+function lsSave(){try{localStorage.setItem(LS,JSON.stringify({bills,names,groups,recurring}))}catch(e){}}
 async function addBill(b){if(db)await db.collection("bills").add(b);else{b.id="b"+Date.now();bills.push(b);lsSave();render()}}
 async function patchBill(id,p){if(db)await db.doc("bills/"+id).update(p);else{Object.assign(bills.find(b=>b.id===id),p);lsSave();render()}}
 async function removeBill(id){if(db)await db.doc("bills/"+id).delete();else{bills=bills.filter(b=>b.id!==id);lsSave();render()}}
@@ -509,12 +626,14 @@ function render(){
   list.forEach(b=>{const sh=shares(b.amount,whoOf(b));due[0]+=sh[0];[1,2,3].forEach(i=>{due[i]+=sh[i];if(sh[i]&&!(b.paid&&b.paid["p"+(i+1)]))owed[i]+=sh[i]})});
   const mine=due[0];
   const dueAll=due[1]+due[2]+due[3],owedAll=owed[1]+owed[2]+owed[3],back=dueAll-owedAll;
-  $("total").textContent=fmt(total);
+  // the headline counts standing bills only
+  const recTotal=list.filter(b=>b.rid).reduce((s,b)=>s+b.amount,0);
+  $("total").textContent=fmt(recTotal);
 
-  // trend vs previous month
+  // trend vs previous month (standing bills too)
   const pd=new Date(cur);pd.setMonth(pd.getMonth()-1);
-  const prev=listFor(ym(pd)).reduce((s,b)=>s+b.amount,0);
-  if(prev>0&&total>0){const ch=Math.round((total-prev)/prev*100);
+  const prev=listFor(ym(pd)).filter(b=>b.rid).reduce((s,b)=>s+b.amount,0);
+  if(prev>0&&recTotal>0){const ch=Math.round((recTotal-prev)/prev*100);
     $("trend").innerHTML=`<b class="${ch>0?"up":""}">${ch>0?"+":""}${ch}%</b> u odnosu na ${MONTHS[pd.getMonth()]}`;$("trend").hidden=false}
   else $("trend").hidden=true;
 
@@ -527,6 +646,11 @@ function render(){
 
   renderChart(list);
   renderMonths();
+  renderYear();
+  renderRecurring();
+  renderPendingHome();
+  setPhoneUI();
+  planReminders();
 
   buildPeople();
   document.querySelectorAll("[data-av]").forEach(a=>a.textContent=initial(names[+a.dataset.av]));
@@ -539,27 +663,33 @@ function render(){
     const c=$("uchip"+ui),o=$("uowe"+ui),m=$("umini"+ui);
     if(u.type==="me"){o.textContent=fmt(mine);m.style.width=mine?"100%":"0";c.className="chip";c.textContent="plaća račune";return}
     const ow=u.members.reduce((s,k)=>s+owed[k],0),du=u.members.reduce((s,k)=>s+due[k],0);
-    o.textContent=fmt(ow);
+    // the card always shows the full share for the month; the chip says what is still open
+    o.textContent=fmt(du);
     m.style.width=(du?Math.round((du-ow)/du*100):0)+"%";
     if(!list.length||du<0.005){c.className="chip";c.textContent="nema računa"}
     else if(ow<0.005){c.className="chip ok";c.textContent="✓ podmireno"}
+    else if(ow<du-0.005){c.className="chip due";c.textContent="još "+fmt(ow)}
     else{c.className="chip due";c.textContent=u.type==="group"?"grupa duguje":"duguje"}
   });
   renderBills(list);
 }
 
-function niceMax(v){if(v<=0)return 100;const p=Math.pow(10,Math.floor(Math.log10(v)));for(const f of [1,1.5,2,2.5,3,4,5,6,8,10]){if(f*p>=v)return f*p}return 10*p}
+function niceMax(v){if(v<=0)return 100;const raw=v/4,p=Math.pow(10,Math.floor(Math.log10(raw)));const step=[1,2,2.5,3,4,5,6,8,10].map(f=>f*p).find(x=>x>=raw);return step*4}
 function renderChart(list){
   const el=$("chartCard");
-  const sums={};list.forEach(b=>{const c=catFor(b.name);sums[c.label]=(sums[c.label]||0)+b.amount});
-  const cats=[...CATS,OTHER].filter(c=>sums[c.label]).sort((a,b)=>sums[b.label]-sums[a.label]).slice(0,6);
+  const sums={},payers={};list.forEach(b=>{const c=catFor(b.name);sums[c.label]=(sums[c.label]||0)+b.amount;
+    const w=whoOf(b);(payers[c.label]=payers[c.label]||new Set()).add(w.length===1?w[0]:"x")});
+  // a category paid by one person only is drawn in that person's colour
+  const soleOf=l=>{const ps=payers[l];if(!ps||ps.size!==1)return null;const v=[...ps][0];return v==="x"?null:v};
+  const cats=CATS.filter(c=>sums[c.label]).sort((a,b)=>sums[b.label]-sums[a.label]).slice(0,6);
   if(!cats.length){el.innerHTML=`<div class="chart-empty">Kad dodaš račune, ovdje ćeš vidjeti koliko ide na struju, vodu, plin…</div>`;return}
   const max=niceMax(Math.max(...cats.map(c=>sums[c.label])));
   const ticks=[1,.75,.5,.25,0].map(f=>max*f);
   el.innerHTML=`<div class="chart"><div class="yax">${ticks.map(t=>`<span>${fmt0(t)}</span>`).join("")}</div>
     <div class="plot">${[0,25,50,75].map(p=>`<div class="grid" style="top:${p}%"></div>`).join("")}
-      <div class="bars">${cats.map(c=>`<div class="bar" style="height:${sums[c.label]/max*100}%" title="${c.label}: ${fmt(sums[c.label])}"><span>${fmt0(sums[c.label])}</span></div>`).join("")}</div></div>
-    <div class="xax">${cats.map(c=>`<div>${icon(c.k,18)}<span>${c.label}</span></div>`).join("")}</div></div>`;
+      <div class="bars">${cats.map(c=>{const o=soleOf(c.label),bg=o!=null?`;background:linear-gradient(180deg,color-mix(in srgb,${PCOL[o]} 65%,#fff),${PCOL[o]})`:"";
+        return `<div class="bar" style="height:${sums[c.label]/max*100}%${bg}" title="${c.label}: ${fmt(sums[c.label])}${o!=null?" · plaća "+esc(names[o]):""}"><span>${fmt0(sums[c.label])}</span></div>`}).join("")}</div></div>
+    <div class="xax">${cats.map(c=>{const o=soleOf(c.label);return `<div>${icon(c.k,18)}<span>${c.label}</span>${o!=null?`<span class="xwho" style="color:${PCOL[o]}">${esc(names[o])}</span>`:""}</div>`}).join("")}</div></div>`;
 }
 
 let armed=null;
@@ -575,7 +705,7 @@ function renderBills(list){
     const whoTxt=who.length===4?`${per} / osoba`:`${per} · dijele ${who.length}`;
     const row=document.createElement("div");row.className="bill";
     row.innerHTML=`<div class="b-top"><div class="tile">${icon(cat.k)}</div>
-      <div class="b-main"><div class="b-name">${esc(b.name)}</div><div class="b-meta">${b.createdAt?new Date(b.createdAt).toLocaleDateString("hr-HR",{day:"numeric",month:"short"}):""}${who.length<4?" · samo: "+esc(who.map(i=>names[i]).join(", ")):""}${others.length&&allPaid?" · sve vraćeno ✓":""}</div></div>
+      <div class="b-main"><div class="b-name">${esc(b.name)}${b.rid?'<span class="tag">stalna</span>':""}</div><div class="b-meta">${b.createdAt?new Date(b.createdAt).toLocaleDateString("hr-HR",{day:"numeric",month:"short"}):""}${who.length<4?" · samo: "+esc(who.map(i=>names[i]).join(", ")):""}${others.length&&allPaid?" · sve vraćeno ✓":""}</div></div>
       <div class="b-amt neg num">−${fmt(b.amount)}<small>${whoTxt}</small></div></div>`;
     const tg=document.createElement("div");tg.className="toggles";
     units().filter(u=>u.type!=="me").forEach(u0=>{
@@ -610,7 +740,7 @@ function renderWho(){
   });
 }
 function openSheet(){selWho=[...ALL];renderWho();updatePreview();$("sheet").classList.add("open");$("scrim").classList.add("open");$("status").textContent="";setTimeout(()=>$("billName").focus(),250)}
-function closeSheet(){$("sheet").classList.remove("open");$("gSheet").classList.remove("open");$("lSheet").classList.remove("open");$("scrim").classList.remove("open")}
+function closeSheet(){$("sheet").classList.remove("open");$("gSheet").classList.remove("open");$("lSheet").classList.remove("open");$("rSheet").classList.remove("open");$("pSheet").classList.remove("open");$("scrim").classList.remove("open")}
 function gUpdate(){
   const sel=[...document.querySelectorAll("#pick input:checked")].map(x=>+x.value);
   $("gPreview").textContent=sel.length>=2?`Grupa vraća ${sel.length} od 4 dijela svakog računa.`:"Odaberi barem dvije osobe.";
@@ -660,23 +790,161 @@ $("addForm").addEventListener("submit",async e=>{
 $("prev").onclick=()=>{cur.setMonth(cur.getMonth()-1);render()};
 $("next").onclick=()=>{cur.setMonth(cur.getMonth()+1);render()};
 // pages: Pregled is open to everyone, the rest need the owner's sign-in
-const PAGES={pregled:"Pregled kućnih režija",ukucani:"Ukućani",racuni:"Računi",mjeseci:"Mjeseci"};
-const LOCKED=new Set(["ukucani","racuni","mjeseci"]);
+const PAGES={pregled:"Pregled kućnih režija",godina:"Pregled po godini",racuni:"Računi",mjeseci:"Mjeseci"};
+const LOCKED=new Set(["racuni","mjeseci"]);
 let page="pregled", pendingPage=null, pendingAdd=false;
 function go(p){
-  if(LOCKED.has(p)&&RO){pendingPage=p;pendingAdd=false;openLogin();return}
+  if(LOCKED.has(p)&&RO){if(authApi){pendingPage=p;pendingAdd=false;openLogin()}else toast("Ova stranica je zaključana");return}
   page=p;
   document.querySelectorAll(".page").forEach(el=>el.hidden=el.dataset.page!==p);
   document.querySelectorAll(".dock .nav").forEach(b=>b.classList.toggle("on",b.dataset.go===p));
   $("balance").hidden=p!=="pregled";
   $("pageSub").textContent=PAGES[p];
-  if(p==="pregled")setGreeting();else $("greet").textContent=PAGES[p];
+  if(p==="pregled")setGreeting();else $("greet").textContent=p==="godina"?"Pregled":PAGES[p];
+  document.querySelector(".top .month").style.visibility=p==="godina"?"hidden":"visible";
   window.scrollTo({top:0});
 }
 function setGreeting(){const h=new Date().getHours();$("greet").textContent=(h<10?"Dobro jutro":h<18?"Dobar dan":"Dobra večer")+" 👋"}
 document.querySelectorAll(".dock .nav").forEach(b=>b.onclick=()=>go(b.dataset.go));
-$("fab").onclick=()=>{if(RO){pendingAdd=true;pendingPage=null;openLogin();return}openSheet()};
+$("fab").onclick=()=>{if(RO){if(authApi){pendingAdd=true;pendingPage=null;openLogin()}else toast("Dodavanje je zaključano");return}openSheet()};
 function afterLogin(){const p=pendingPage,a=pendingAdd;pendingPage=null;pendingAdd=false;if(p)go(p);if(a)setTimeout(openSheet,320)}
+
+
+let yearSel=new Date().getFullYear();
+function renderYear(){
+  if(!$("yTotal"))return;
+  $("yLabel").textContent=yearSel;
+  const yb=bills.filter(b=>b.rid&&(b.month||"").startsWith(yearSel+"-"));
+  const per=Array(12).fill(0);yb.forEach(b=>{per[+b.month.slice(5,7)-1]+=b.amount});
+  const total=per.reduce((a,b)=>a+b,0);
+  const now=new Date();
+  const monthsSoFar=yearSel<now.getFullYear()?12:yearSel>now.getFullYear()?0:now.getMonth()+1;
+  const active=per.filter(v=>v>0).length;
+  const avgDiv=Math.max(active,1);
+  $("yTotal").textContent=fmt(total);
+  $("yAvg").textContent=active?fmt(total/avgDiv):"—";
+  const mi=per.indexOf(Math.max(...per));
+  $("yMax").textContent=total?MONTHS[mi]+" · "+fmt0(per[mi]):"—";
+  const prev=bills.filter(b=>b.rid&&(b.month||"").startsWith((yearSel-1)+"-")).reduce((s,b)=>s+b.amount,0);
+  $("yCmp").innerHTML=prev>0&&total>0?(()=>{const ch=Math.round((total-prev)/prev*100);return `U odnosu na ${yearSel-1}. (${fmt(prev)}): <b class="${ch>0?"up":"down"}">${ch>0?"+":""}${ch}%</b>`})():"";
+  $("yMeta").textContent=active?`${active} ${active===1?"mjesec":active<5?"mjeseca":"mjeseci"} s računima`:"";
+  // 12-month chart
+  const yc=$("yChart");
+  if(!total){yc.innerHTML=`<div class="chart-empty">Za ${yearSel}. još nema stalnih režija.</div>`;$("yCats").innerHTML=`<div class="chart-empty">Nema podataka.</div>`;$("yMeta2").textContent="";return}
+  const max=niceMax(Math.max(...per));
+  yc.innerHTML=`<div class="chart"><div class="yax">${[1,.75,.5,.25,0].map(f=>`<span>${fmt0(max*f)}</span>`).join("")}</div>
+    <div class="plot">${[0,25,50,75].map(p=>`<div class="grid" style="top:${p}%"></div>`).join("")}
+      <div class="bars y12">${per.map((v,i)=>`<div class="bar${v?"":" zero"}${v&&i===mi?" max":""}" style="height:${v?v/max*100:1.5}%" title="${MONTHS[i]}: ${fmt(v)}">${v&&i===mi?`<span>${fmt0(v)}</span>`:""}</div>`).join("")}</div></div>
+    <div class="xax y12">${MONTHS.map(m=>`<div><span>${m.slice(0,3)}</span></div>`).join("")}</div></div>`;
+  // categories
+  const sums={};yb.forEach(b=>{const c=catFor(b.name);sums[c.label]=(sums[c.label]||0)+b.amount});
+  const cats=[...CATS,OTHER].filter(c=>sums[c.label]).sort((a,b)=>sums[b.label]-sums[a.label]);
+  const top=sums[cats[0].label];
+  $("yMeta2").textContent=cats.length+" "+(cats.length===1?"vrsta":cats.length<5?"vrste":"vrsta");
+  $("yCats").innerHTML=cats.map(c=>`<div class="cat-row"><div class="tile">${icon(c.k)}</div>
+    <div><div class="cn">${c.label}<span>${Math.round(sums[c.label]/total*100)}%</span></div><div class="cb"><i style="width:${sums[c.label]/top*100}%"></i></div></div>
+    <div class="ca num">${fmt(sums[c.label])}</div></div>`).join("");
+}
+$("yprev").onclick=()=>{yearSel--;renderYear()};
+$("ynext").onclick=()=>{yearSel++;renderYear()};
+
+// ---- standing bills
+const recDraft={};
+function lastAmountFor(r,month){
+  const prev=bills.filter(b=>(b.rid===r.id||(!b.rid&&b.name===r.name))&&b.month<month).sort((a,b)=>a.month<b.month?1:-1)[0];
+  return prev?prev.amount:null;
+}
+function pendingFor(month){const list=listFor(month);return recList().filter(r=>!list.some(b=>b.rid===r.id))}
+function renderRecurring(){
+  const el=$("recCard");if(!el)return;
+  if(document.activeElement&&el.contains(document.activeElement)&&document.activeElement.tagName==="INPUT")return;
+  const m=ym(cur),list=listFor(m),items=recList();
+  if(!items.length){el.innerHTML=`<div class="chart-empty">Nema stalnih režija.${RO?"":" Dodaj ih preko „Uredi popis”."}</div>`;return}
+  el.innerHTML=items.map(r=>{
+    const b=list.find(x=>x.rid===r.id),cat=catFor(r.name);
+    const rw=whoForRec(r,m),whoTxt=rw.length<4?" · samo "+rw.map(i=>esc(names[i])).join(", "):"";
+    if(b)return `<div class="rec-row done"><div class="tile">${icon(cat.k)}</div><div><div class="rn">${esc(r.name)}</div><div class="rs">✓ upisano</div></div><div class="rec-amt num">${fmt(b.amount)}</div></div>`;
+    const last=lastAmountFor(r,m);
+    const val=recDraft[r.id]!==undefined?recDraft[r.id]:(r.amount!=null?String(r.amount).replace(".",","):"");
+    const sub=r.amount!=null?`fiksno ${fmt(r.amount)}`:last!=null?`prošli put ${fmt(last)}`:"upiši iznos";
+    return `<div class="rec-row"><div class="tile">${icon(cat.k)}</div><div><div class="rn">${esc(r.name)}</div><div class="rs">${sub}${whoTxt}</div></div>
+      <div class="rec-in"><input data-rid="${r.id}" id="rin-${r.id}" inputmode="decimal" placeholder="${last!=null?String(last).replace(".",","):"0,00"}" value="${esc(val)}" aria-label="Iznos za ${esc(r.name)}"><button data-radd="${r.id}">Dodaj</button></div></div>`;
+  }).join("")+`<div id="recFoot"></div>`;
+  updateRecFoot();
+  el.querySelectorAll("[data-radd]").forEach(b=>b.onclick=()=>addRecurring([b.dataset.radd]));
+  el.querySelectorAll("input[data-rid]").forEach(x=>{x.oninput=()=>{recDraft[x.dataset.rid]=x.value;updateRecFoot()};x.onkeydown=e=>{if(e.key==="Enter")addRecurring([x.dataset.rid])}});
+}
+function updateRecFoot(){
+  const f=$("recFoot");if(!f)return;
+  const m=ym(cur),list=listFor(m),items=recList();
+  const open=items.filter(r=>!list.some(b=>b.rid===r.id));
+  const ready=open.filter(r=>{const x=$("rin-"+r.id);return x&&parseAmt(x.value)!==null}).map(r=>r.id);
+  f.className="rec-foot";
+  f.innerHTML=open.length?`<span>Još ${open.length} od ${items.length} za ${MONTHS[cur.getMonth()]}</span>${ready.length>1?`<button class="rec-all" id="recAll">Dodaj sve s iznosom (${ready.length})</button>`:""}`
+    :`<span style="color:var(--ok)">Sve stalne režije za ${MONTHS[cur.getMonth()]} su upisane ✓</span>`;
+  if($("recAll"))$("recAll").onclick=()=>addRecurring(ready);
+}
+async function addRecurring(ids){
+  if(RO)return;
+  const vals={};ids.forEach(id=>{const x=$("rin-"+id);if(x)vals[id]=x.value});
+  if(document.activeElement)document.activeElement.blur();
+  const m=ym(cur);let n=0;
+  for(const id of ids){
+    const r=recList().find(x=>x.id===id);if(!r||vals[id]===undefined)continue;
+    const amount=parseAmt(vals[id]);
+    if(amount===null){if(ids.length===1){const inp=$("rin-"+id);if(inp)inp.focus();toast("Upiši iznos za "+r.name)}continue}
+    if(listFor(m).some(b=>b.rid===id))continue;
+    try{await addBill({name:r.name,amount,who:[...whoForRec(r,m)],rid:id,month:m,createdAt:Date.now(),paid:{p2:false,p3:false,p4:false}});delete recDraft[id];n++}
+    catch(e){toast("Nije spremljeno: "+r.name)}
+  }
+  if(n)toast(n===1?"Dodano":"Dodano: "+n+" računa");
+}
+function renderPendingHome(){
+  const box=$("pendingHome");if(!box)return;
+  const pend=pendingFor(ym(cur));
+  box.hidden=!pend.length;
+  if(pend.length)$("pendingText").textContent=pend.map(r=>r.name).join(", ")+" · "+MONTHS[cur.getMonth()];
+}
+// manage list
+let rWork=[];
+function openRecSheet(){
+  rWork=recList().map(r=>({...r,who:[...(r.who||[0,1,2,3])],orig:[...(r.who||[0,1,2,3])],prev:[...(r.prev||[])]}));
+  $("rFrom").textContent=MONTHS[cur.getMonth()]+" "+cur.getFullYear()+".";
+  drawRecSheet();$("rStatus").textContent="";
+  $("rSheet").classList.add("open");$("scrim").classList.add("open");
+}
+function drawRecSheet(){
+  $("rList").innerHTML=rWork.map((r,i)=>`<div class="r-item"><div class="r-top">
+    <input data-k="name" data-i="${i}" value="${esc(r.name)}" placeholder="Naziv" maxlength="40" aria-label="Naziv">
+    <input data-k="amount" data-i="${i}" inputmode="decimal" value="${esc(r.amountTxt!==undefined?r.amountTxt:r.amount!=null?String(r.amount).replace(".",","):"")}" placeholder="promjenjiv" aria-label="Fiksni iznos">
+    <button class="r-del" data-del="${i}" aria-label="Ukloni">✕</button></div>
+    <div class="r-who">${[0,1,2,3].map(k=>`<button type="button" data-w="${i}:${k}" aria-pressed="${r.who.includes(k)}"><div class="avatar" style="background:${PCOL[k]}">${esc(initial(names[k]))}</div>${esc(names[k])}</button>`).join("")}</div></div>`).join("")||'<div class="chart-empty">Popis je prazan.</div>';
+  $("rList").querySelectorAll("input").forEach(x=>x.oninput=()=>{const r=rWork[+x.dataset.i];if(x.dataset.k==="name")r.name=x.value;else r.amountTxt=x.value});
+  $("rList").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{rWork.splice(+b.dataset.del,1);drawRecSheet()});
+  $("rList").querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>{const [i,k]=b.dataset.w.split(":").map(Number),r=rWork[i];
+    if(r.who.includes(k)){if(r.who.length===1){$("rStatus").textContent="Barem jedna osoba mora dijeliti račun.";return}r.who=r.who.filter(x=>x!==k)}else r.who=[...r.who,k].sort();$("rStatus").textContent="";drawRecSheet()});
+}
+$("rAdd").onclick=()=>{rWork.push({id:"r"+Date.now().toString(36),name:"",amount:null,who:[0,1,2,3]});drawRecSheet();const ins=$("rList").querySelectorAll('input[data-k="name"]');ins[ins.length-1].focus()};
+$("rSave").onclick=async()=>{
+  const items=[];
+  for(const r of rWork){
+    const name=(r.name||"").trim();if(!name)continue;
+    let amount=r.amount;
+    if(r.amountTxt!==undefined){const t=r.amountTxt.trim();if(!t)amount=null;else{amount=parseAmt(t);if(amount===null){$("rStatus").textContent="Iznos za „"+name+"” nije ispravan.";return}}}
+    let prev=r.prev||[];
+    if(r.orig&&r.orig.join()!==r.who.join()){
+      // the change applies from the month being viewed; earlier months keep the old people
+      const until=prevMonth(ym(cur));
+      prev=prev.filter(x=>x.until<until).concat([{until,who:r.orig}]);
+    }
+    const it={id:r.id,name,amount,who:r.who};if(prev.length)it.prev=prev;
+    items.push(it);
+  }
+  recurring=items;
+  try{if(db)await db.doc("settings/recurring").set({items});else lsSave()}catch(e){$("rStatus").textContent="Popis nije spremljen. Pokušaj ponovno.";return}
+  closeSheet();render();toast("Popis stalnih režija spremljen");
+};
+$("recEdit").onclick=()=>{if(!RO)openRecSheet()};
 
 function renderMonths(){
   const el=$("months");if(!el)return;
@@ -699,32 +967,106 @@ function renderMonths(){
 // boot
 if(SNAP){bills=SNAP.bills||[];names=SNAP.names||names;groups=SNAP.groups||[];
   if(SNAP.month){const [y,m]=SNAP.month.split("-").map(Number);cur=new Date(y,m-1,1)}}
-buildPeople();render();go("pregled");
-// Firebase: everyone reads, only the owner (signed in) edits
-let authApi=null, signedIn=null;
-function setAuthUI(){
-  const owner=authApi&&authApi.isOwner(signedIn);
-  $("loginBtn").hidden=!authApi||owner;
-  $("logoutBtn").hidden=!owner;
-  if(signedIn&&!owner){$("roText").textContent="Prijavljen račun nema pravo uređivanja"}
-  else if(!SNAP&&RO){$("roText").textContent="Ostale stranice su zaključane"}
-  if(RO&&LOCKED.has(page))go("pregled");
+// ---- debt reminders (Android app only)
+const NOTE=window.RezijeNotify&&window.RezijeNotify.available?window.RezijeNotify:null;
+const PHONE_KEY="rezije-phone";
+let phoneOf=null;try{const v=localStorage.getItem(PHONE_KEY);phoneOf=v===null?null:+v}catch(e){}
+function setPhoneUI(){
+  if(!NOTE)return;
+  $("phoneBtn").hidden=false;
+  $("phoneTxt").textContent=phoneOf>=1?"Obavijesti: "+names[phoneOf]:phoneOf===0?"Mobitel: "+names[0]:"Postavi obavijesti";
 }
-(async()=>{
-  if(SNAP)return;
-  const cfg=window.FIREBASE_CONFIG;
-  if(!window.RezijeBackend||!cfg||String(cfg.apiKey).includes("ZAMIJENI")){
-    setRO(true);$("roText").textContent="Firebase nije podešen: upiši podatke u config.js";
-    $("bills").innerHTML='<div class="empty">Aplikacija još nije spojena na Firebase.</div>';return}
-  let be;
-  try{be=window.RezijeBackend.start(cfg,window.OWNER_EMAIL)}catch(e){setRO(true);$("roText").textContent="Spajanje na Firebase nije uspjelo";return}
-  db=be.db;authApi=be.auth;
-  authApi.onChange(u=>{signedIn=u;setRO(!authApi.isOwner(u));setAuthUI()});
-  setAuthUI();
+function openPhoneSheet(){
+  $("phonePick").innerHTML=[0,1,2,3].map(i=>`<button type="button" data-ph="${i}" aria-pressed="${phoneOf===i}"><div class="avatar" style="background:${PCOL[i]}">${esc(initial(names[i]))}</div><span>${esc(names[i])}</span></button>`).join("");
+  $("phonePick").querySelectorAll("[data-ph]").forEach(b=>b.onclick=()=>choosePhone(+b.dataset.ph));
+  $("pStatus").textContent="";
+  $("pSheet").classList.add("open");$("scrim").classList.add("open");
+}
+async function choosePhone(i){
+  phoneOf=i;try{localStorage.setItem(PHONE_KEY,String(i))}catch(e){}
+  setPhoneUI();
+  if(i>=1){
+    const ok=await NOTE.ensurePermission();
+    closeSheet();
+    toast(ok?"Obavijesti uključene":"Obavijesti nisu dopuštene. Uključi ih u postavkama mobitela.");
+  }else{closeSheet();toast(i===0?"Tebi ne stižu podsjetnici, ti primaš novac":"Obavijesti isključene")}
+  lastPlan="";planReminders();
+}
+$("phoneBtn").onclick=openPhoneSheet;
+$("phoneNone").onclick=()=>choosePhone(-1);
+function owedForPhone(idx){
+  const g=groups.find(x=>x.members.includes(idx)),members=g?g.members:[idx];
+  const upto=ym(new Date());let owed=0;
+  bills.forEach(b=>{if(!b.month||b.month>upto)return;const sh=shares(b.amount,whoOf(b));
+    members.forEach(k=>{if(sh[k]&&!(b.paid&&b.paid["p"+(k+1)]))owed+=sh[k]})});
+  return {owed:Math.round(owed*100)/100,group:g};
+}
+// first reminder: the 10th at 12:00, or the next 12:00 if we are already past the 10th
+function firstReminder(now=new Date()){
+  const t=new Date(now.getFullYear(),now.getMonth(),Math.max(10,now.getDate()),12,0,0,0);
+  if(t<=now)t.setDate(t.getDate()+1);
+  return t;
+}
+let lastPlan="",planTimer=null;
+function planReminders(){
+  if(!NOTE||!billsLoaded)return;
+  clearTimeout(planTimer);
+  planTimer=setTimeout(async()=>{
+    const idx=phoneOf;
+    if(!(idx>=1)){if(lastPlan!=="none"){lastPlan="none";NOTE.clear()}return}
+    const {owed,group}=owedForPhone(idx);
+    const first=firstReminder();
+    const sig=idx+"|"+owed.toFixed(2)+"|"+first.toDateString();
+    if(sig===lastPlan)return;lastPlan=sig;
+    if(owed<0.005){NOTE.clear();return}
+    const who=group?groupName(group)+", dugujete":"Duguješ",pay=group?"Kad platite":"Kad platiš";
+    const list=[];
+    for(let d=0;d<30;d++){const at=new Date(first);at.setDate(first.getDate()+d);
+      list.push({at,title:"Kućne režije",body:`${who} ${fmt(owed)} za režije. ${pay}, ${names[0]} će to označiti i podsjetnici prestaju.`})}
+    try{await NOTE.plan(list)}catch(e){lastPlan=""}
+  },1200);
+}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){lastPlan="";planReminders()}});
+
+// One page, two homes: the Android app (Firebase + owner sign-in) or a Claude artifact
+const IS_APP=!!(window.RezijeBackend&&window.FIREBASE_CONFIG);
+let authApi=null, signedIn=null;
+function subscribe(){
   db.doc("settings/people").onSnapshot(s=>{if(s.exists){const d=s.data();if(Array.isArray(d.names))names=[...d.names];
     groups=Array.isArray(d.groups)?d.groups.map(g=>({name:g.name||"",members:[...(g.members||[])].filter(m=>m>=1&&m<=3)})).filter(g=>g.members.length>=2):[];render()}},()=>{});
-  db.collection("bills").onSnapshot(s=>{bills=s.docs.map(d=>({id:d.id,...d.data()}));render()},
-    ()=>{$("bills").innerHTML=`<div class="empty">Računi se trenutno ne mogu učitati. Provjeri internet i pravila u Firebaseu.</div>`});
+  db.doc("settings/recurring").onSnapshot(s=>{recurring=s.exists&&Array.isArray(s.data().items)?s.data().items:null;render()},()=>{});
+  db.collection("bills").onSnapshot(s=>{bills=s.docs.map(d=>({id:d.id,...d.data()}));billsLoaded=true;render();if(NOTE&&phoneOf===null&&!askedPhone){askedPhone=true;setTimeout(openPhoneSheet,600)}},
+    ()=>{$("bills").innerHTML=`<div class="empty">Računi se trenutno ne mogu učitati. Provjeri internet.</div>`});
+}
+let billsLoaded=false,askedPhone=false;
+function setAuthUI(){
+  const owner=!!(authApi&&authApi.isOwner(signedIn));
+  $("loginBtn").hidden=!authApi||owner;
+  $("logoutBtn").hidden=!owner;
+  if(signedIn&&authApi&&!owner)$("roText").textContent="Prijavljen račun nema pravo uređivanja";
+  else if(RO)$("roText").textContent="Ostale stranice su zaključane";
+  if(RO&&LOCKED.has(page))go("pregled");
+}
+buildPeople();render();go("pregled");
+(async()=>{
+  if(SNAP)return;
+  if(IS_APP){
+    const cfg=window.FIREBASE_CONFIG;
+    if(String(cfg.apiKey).includes("ZAMIJENI")){setRO(true);$("roText").textContent="Firebase nije podešen: upiši podatke u config.js";return}
+    let be;
+    try{be=window.RezijeBackend.start(cfg,window.OWNER_EMAIL)}catch(e){setRO(true);$("roText").textContent="Spajanje na Firebase nije uspjelo";return}
+    db=be.db;authApi=be.auth;
+    authApi.onChange(u=>{signedIn=u;setRO(!authApi.isOwner(u));setAuthUI()});
+    setAuthUI();subscribe();return;
+  }
+  const cl=window.claude;
+  const [dbx,user]=await Promise.all(["db","user"].map(n=>cl?cl.use(n).catch(()=>null):Promise.resolve(null)));
+  db=dbx;
+  let own=!!db;
+  if(user){try{own=await user.isOwner()}catch(e){own=false}}
+  setRO(!own);setAuthUI();
+  if(!db){lsLoad();render();return}
+  subscribe();
 })();
 
 // login sheet
@@ -744,6 +1086,7 @@ $("lForm").addEventListener("submit",async e=>{
   finally{$("lSubmit").disabled=false}
 });
 </script>
+
 
 </body>
 </html>

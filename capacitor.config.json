@@ -2,5 +2,13 @@
   "appId": "hr.kucne.rezije",
   "appName": "Kućne režije",
   "webDir": "www",
-  "android": { "backgroundColor": "#0b3d22" }
+  "android": {
+    "backgroundColor": "#0b3d22"
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_rezije",
+      "iconColor": "#1F8A3F"
+    }
+  }
 }

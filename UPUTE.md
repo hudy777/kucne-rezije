@@ -80,3 +80,19 @@ Zatim u Android Studiju otvori mapu `android` i odaberi **Build → Build APK(s)
 | `src/firebase.js` | spajanje na Firebase |
 | `.github/workflows/build-apk.yml` | automatska izgradnja APK-a |
 | `android/` | Android projekt |
+
+---
+
+## Obavijesti o dugu
+
+Pri prvom otvaranju aplikacija pita **čiji je to mobitel**. Ukućanin odabere sebe i dopusti obavijesti.
+
+- Od **10. u mjesecu, svaki dan u 12:00**, stiže podsjetnik s iznosom koji duguje (za grupu zajednički iznos).
+- Kad mu označiš da je platio, podsjetnici prestaju čim se aplikacija na njegovom mobitelu sljedeći put otvori ili osvježi.
+- Na tvom mobitelu odaberi sebe. Tebi podsjetnici ne stižu.
+- Osobu možeš promijeniti tipkom 🔔 u zelenom zaglavlju.
+
+## Izmjene izgleda
+
+`src/page.html` je jedina izvorna datoteka (ista se koristi i kao Claude artifact).
+`npm run build` iz nje napravi `www/index.html`.
